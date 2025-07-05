@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
-import LandingPage from '../pages/LandingPage'
-import AgentsPage from '../pages/AgentsPage'
-import CreateAgentPage from '../pages/CreateAgentPage'
+import LandingPage from './pages/LandingPage'
+import AgentsPage from './pages/AgentsPage'
+import CreateAgentPage from './pages/CreateAgentPage'
 
 function App() {
   return (
@@ -13,4 +13,4 @@ function App() {
   )
 }
 
-export default App 
+export default App

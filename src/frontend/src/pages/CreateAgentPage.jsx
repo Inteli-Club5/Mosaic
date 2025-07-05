@@ -88,7 +88,6 @@ const CreateAgentPage = () => {
                     <div className="nav-wrapper">
                         <div className="logo">
                             <img src="./logo.png" alt="Mosaic Logo" />
-                            <span>Mosaic</span>
                         </div>
                         <nav>
                             <ul>
