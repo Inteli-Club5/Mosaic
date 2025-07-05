@@ -232,7 +232,7 @@ const AgentsPage = () => {
                             </div>
                             </div>
 
-                            <button className="btn-view-profile">View Profile</button>
+                            <button className="btn-view-profile">View Agent</button>
                         </div>
                         ))}
                     </div>
