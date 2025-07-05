@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import { AGENTS_DATA } from '../constants/agents';
+import { cn } from '../lib/utils';
+import { InteractiveGridPattern } from '../components/magicui/interactive-grid-pattern';
+
 
 const AgentsPage = () => {
     const [chatMessages, setChatMessages] = useState([
@@ -9,7 +12,7 @@ const AgentsPage = () => {
     ]);
     
     const [newMessage, setNewMessage] = useState('');
-    const [showAgents, setShowAgents] = useState(false);
+    const [showAgents, setShowAgents] = useState(true);
     
     const [filters, setFilters] = useState({
         category: '',
@@ -38,7 +41,6 @@ const AgentsPage = () => {
                     sender: 'orchestrator',
                     text: 'Based on your request, I found some agents that can help you. I will show the results below.'
                 }]);
-                setShowAgents(true);
             }, 1000);
             
             setNewMessage('');
@@ -89,53 +91,110 @@ const AgentsPage = () => {
                 </div>
             </header>
 
-            {/* Orchestrator Chat Section */}
-            <section className="orchestrator-chat">
-                <div className="container">
-                    <div className="chat-container large">
-                        <div className="chat-header">
-                            <div className="agent-info">
-                                <div className="agent-avatar orchestrator">🎭</div>
-                                <div className="agent-details">
-                                    <h3>Orchestrator Agent</h3>
-                                    <span className="status online">Online - Finding agents for you</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="chat-messages">
-                            {chatMessages.map(message => (
-                                <div key={message.id} className={`message ${message.sender}`}>
-                                    <div className="message-content">
-                                        {message.text}
+            {/* Grid Background - Reduced height */}
+            <div className="fixed top-0 left-0 w-screen" style={{ zIndex: -1, height: '100vh' }}>
+                <InteractiveGridPattern
+                    className={cn("w-full h-full")}
+                    width={40}
+                    height={40}
+                    squares={[60, 32]}
+                    squaresClassName=""
+                />
+            </div>
+
+
+
+            {/* Orchestrator Chat Section - Ultra Modern Design */}
+            <section className="orchestrator-chat relative" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50, minHeight: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
+                <div className="container relative px-4 sm:px-6 lg:px-8" style={{ marginTop: '120px', paddingBottom: '40px' }}>
+                    <div className="max-w-4xl mx-auto">
+                        {/* Modern Chat Container */}
+                        <div className="modern-chat-container">
+                            {/* Header */}
+                            <div className="modern-chat-header">
+                                <div className="chat-header-content">
+                                    <div className="chat-agent-info">
+                                        <div className="chat-avatar">
+                                            🤖
+                                        </div>
+                                        <div className="chat-agent-details">
+                                            <h3>Orchestrator Agent</h3>
+                                            <p>Build your multi-agent with prompts</p>
+                                        </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="chat-input">
-                            <input
-                                type="text"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                placeholder="Describe what you need... (e.g., 'I need help with sales data analysis')"
-                                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            />
-                            <button onClick={handleSendMessage}>Search</button>
+                            </div>
+
+                            {/* Messages Area */}
+                            <div className="modern-chat-messages">
+                                <div className="messages-container">
+                                    {chatMessages.map(message => (
+                                        <div key={message.id} className={`message-wrapper ${message.sender}`}>
+                                            <div className={`message-bubble ${message.sender}`}>
+                                                <p className="message-text">{message.text}</p>
+                                                <div className={`message-meta ${message.sender}`}>
+                                                    {message.sender === 'user' ? 'You' : 'Orchestrator'} • now
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Input Area */}
+                            <div className="modern-chat-input">
+                                <div className="chat-input-container">
+                                    <div className="chat-input-wrapper">
+                                        <input
+                                            type="text"
+                                            value={newMessage}
+                                            onChange={(e) => setNewMessage(e.target.value)}
+                                            placeholder="Describe what kind of AI agent you need..."
+                                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                            className="chat-input-field"
+                                        />
+                                    </div>
+                                    <button 
+                                        onClick={handleSendMessage}
+                                        className="chat-send-button"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Transition Area */}
-            <div className={`transition-area ${showAgents ? 'show' : ''}`}>
-                <div className="container">
-                    <h2>Agents Found</h2>
-                    <p>Scroll down to see more available agents</p>
+            <div className={`transition-area ${showAgents ? 'show' : ''}`} style={{ marginTop: '40vh' }}>
+                <style jsx>{`
+                    @media (max-width: 768px) {
+                        .transition-area {
+                            margin-top: 360px !important;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .transition-area {
+                            margin-top: 320px !important;
+                        }
+                    }
+                `}</style>
+                <div className="gradient-transition"></div>
+                <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '80px' }}>
+                    <div className="text-center py-8">
+                        <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-6 rounded-full"></div>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Available Agents</h2>
+                        <p className="text-gray-600">Discover and connect with specialized AI agents</p>
+                    </div>
                 </div>
             </div>
 
             {/* Agents Grid Section */}
             <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
-                <div className="container">
+                <div className="container bg-white rounded-t-3xl shadow-lg">
+                    <div className="px-6 py-8">
                     {/* Filters */}
                     <div className="filters-section">
                         <div className="filters-top">
@@ -215,6 +274,7 @@ const AgentsPage = () => {
                         <button className="btn-page">3</button>
                         <button className="btn-page">...</button>
                         <button className="btn-page">10</button>
+                    </div>
                     </div>
                 </div>
             </section>

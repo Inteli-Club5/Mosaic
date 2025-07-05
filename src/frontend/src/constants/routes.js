@@ -2,6 +2,7 @@ export const ROUTES = {
   HOME: '/',
   AGENTS: '/agents',
   CREATE_AGENT: '/agents/create',
+  TEST: '/test',
   MARKETPLACE: '/marketplace',
   DOCUMENTATION: '/documentation',
   API: '/api',
