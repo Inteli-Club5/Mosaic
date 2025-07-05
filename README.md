@@ -4,7 +4,7 @@
 
 <sub>Figure 1 - Logo</sub>
 
-![Logo](img/logo.png)
+![Logo](docs/img/logo.png)
 
 <sup>Source: Material produced by the authors (2025)</sup>
 
