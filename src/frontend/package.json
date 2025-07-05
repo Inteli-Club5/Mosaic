@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build-client && node index.js",
+    "dev": "npm run dev-client & nodemon index.js",
+    "build-client": "npm run clean && parcel build client/src/index.html --out-dir client/dist",
+    "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
+    "clean": "rmdir /s /q .cache client\\dist",
+    "parcel": "parcel client/src/index.html --out-dir client/dist"
+  },
+  "keywords": [],
+  "author": "Club5",
+  "license": "MIT",
+  "description": "Descentralized AI Services Marketplace",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "parcel-bundler": "^1.12.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.4.0"
+  }
+}
