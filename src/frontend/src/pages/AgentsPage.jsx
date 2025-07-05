@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../constants/routes';
+import { AGENTS_DATA } from '../constants/agents';
 
 const AgentsPage = () => {
     const [chatMessages, setChatMessages] = useState([
-        { id: 1, sender: 'orchestrator', text: 'Olá! Sou o agente orquestrador. Posso ajudá-lo a encontrar o agente perfeito para suas necessidades. O que você está procurando?' }
+        { id: 1, sender: 'orchestrator', text: 'Hello! I am the orchestrator agent. I can help you find the perfect agent for your needs. What are you looking for?' }
     ]);
     
     const [newMessage, setNewMessage] = useState('');
@@ -16,68 +19,9 @@ const AgentsPage = () => {
         sortBy: 'popularity'
     });
 
-    const [agents] = useState([
-        {
-            id: 1,
-            name: 'Agente de Análise de Dados',
-            category: 'Análise de Dados',
-            description: 'Especializado em análise estatística, visualização de dados e insights de negócios para empresas.',
-            price: 50,
-            rating: 4.8,
-            avatar: '📊',
-            verified: true
-        },
-        {
-            id: 2,
-            name: 'Assistente de Marketing',
-            category: 'Marketing',
-            description: 'Criação de campanhas, análise de mercado e estratégias de marketing digital para seu negócio.',
-            price: 35,
-            rating: 4.6,
-            avatar: '📈',
-            verified: true
-        },
-        {
-            id: 3,
-            name: 'Consultor Financeiro IA',
-            category: 'Finanças',
-            description: 'Planejamento financeiro, análise de investimentos e consultoria para otimização de recursos.',
-            price: 80,
-            rating: 4.9,
-            avatar: '💰',
-            verified: true
-        },
-        {
-            id: 4,
-            name: 'Desenvolvedor de Código',
-            category: 'Desenvolvimento',
-            description: 'Desenvolvimento de aplicações, revisão de código e consultoria técnica em diversas linguagens.',
-            price: 60,
-            rating: 4.7,
-            avatar: '💻',
-            verified: true
-        },
-        {
-            id: 5,
-            name: 'Designer Criativo',
-            category: 'Design',
-            description: 'Criação de designs únicos, branding e identidade visual para projetos criativos.',
-            price: 45,
-            rating: 4.5,
-            avatar: '🎨',
-            verified: false
-        },
-        {
-            id: 6,
-            name: 'Especialista em SEO',
-            category: 'Marketing',
-            description: 'Otimização de mecanismos de busca, análise de palavras-chave e estratégias de posicionamento.',
-            price: 40,
-            rating: 4.4,
-            avatar: '🔍',
-            verified: true
-        }
-    ]);
+
+
+    const navigate = useNavigate();
 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
@@ -87,12 +31,12 @@ const AgentsPage = () => {
                 text: newMessage 
             }]);
             
-            // Simular resposta do agente orquestrador
+            // Simulate orchestrator agent response
             setTimeout(() => {
                 setChatMessages(prev => [...prev, {
                     id: prev.length + 1,
                     sender: 'orchestrator',
-                    text: 'Baseado na sua solicitação, encontrei alguns agentes que podem ajudá-lo. Vou mostrar os resultados abaixo.'
+                    text: 'Based on your request, I found some agents that can help you. I will show the results below.'
                 }]);
                 setShowAgents(true);
             }, 1000);
@@ -101,7 +45,7 @@ const AgentsPage = () => {
         }
     };
 
-    const filteredAgents = agents.filter(agent => {
+    const filteredAgents = AGENTS_DATA.filter(agent => {
         const matchesCategory = !filters.category || agent.category === filters.category;
         const matchesPrice = agent.price >= filters.minPrice && agent.price <= filters.maxPrice;
         const matchesRating = agent.rating >= filters.minRating;
@@ -128,19 +72,18 @@ const AgentsPage = () => {
                 <div className="container">
                     <div className="nav-wrapper">
                         <div className="logo">
-                            <img src="./logo.png" alt="Mosaic Logo" />
-                            <span>Mosaic</span>
+                            <img src="./logo-big.svg" alt="Mosaic Logo" />
                         </div>
                         <nav>
                             <ul>
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/agents" className="active">Agentes</a></li>
-                                <li><a href="/agents/create">Cadastrar Agente</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.HOME); }}>Home</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.AGENTS); }} className="active">Agents</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.CREATE_AGENT); }}>Register Agent</a></li>
                             </ul>
                         </nav>
                         <div className="auth-buttons">
                             <button className="btn-login">Login</button>
-                            <button className="btn-register">Cadastrar</button>
+                            <button className="btn-register">Register</button>
                         </div>
                     </div>
                 </div>
@@ -154,8 +97,8 @@ const AgentsPage = () => {
                             <div className="agent-info">
                                 <div className="agent-avatar orchestrator">🎭</div>
                                 <div className="agent-details">
-                                    <h3>Agente Orquestrador</h3>
-                                    <span className="status online">Online - Encontrando agentes para você</span>
+                                    <h3>Orchestrator Agent</h3>
+                                    <span className="status online">Online - Finding agents for you</span>
                                 </div>
                             </div>
                         </div>
@@ -173,10 +116,10 @@ const AgentsPage = () => {
                                 type="text"
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
-                                placeholder="Descreva o que você precisa... (ex: 'Preciso de ajuda com análise de dados de vendas')"
+                                placeholder="Describe what you need... (e.g., 'I need help with sales data analysis')"
                                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                             />
-                            <button onClick={handleSendMessage}>Buscar</button>
+                            <button onClick={handleSendMessage}>Search</button>
                         </div>
                     </div>
                 </div>
@@ -185,8 +128,8 @@ const AgentsPage = () => {
             {/* Transition Area */}
             <div className={`transition-area ${showAgents ? 'show' : ''}`}>
                 <div className="container">
-                    <h2>Agentes Encontrados</h2>
-                    <p>Deslize para baixo para ver mais agentes disponíveis</p>
+                    <h2>Agents Found</h2>
+                    <p>Scroll down to see more available agents</p>
                 </div>
             </div>
 
@@ -200,16 +143,16 @@ const AgentsPage = () => {
                                 value={filters.category} 
                                 onChange={(e) => setFilters({...filters, category: e.target.value})}
                             >
-                                <option value="">Todas as Categorias</option>
-                                <option value="Análise de Dados">Análise de Dados</option>
+                                <option value="">All Categories</option>
+                                <option value="Data Analysis">Data Analysis</option>
                                 <option value="Marketing">Marketing</option>
-                                <option value="Finanças">Finanças</option>
-                                <option value="Desenvolvimento">Desenvolvimento</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Development">Development</option>
                                 <option value="Design">Design</option>
                             </select>
                             
                             <div className="price-filter">
-                                <label>Preço: R${filters.minPrice} - R${filters.maxPrice}/hora</label>
+                                <label>Price: ${filters.minPrice} - ${filters.maxPrice}/hour</label>
                                 <input 
                                     type="range" 
                                     min="0" 
@@ -223,20 +166,20 @@ const AgentsPage = () => {
                                 value={filters.minRating} 
                                 onChange={(e) => setFilters({...filters, minRating: e.target.value})}
                             >
-                                <option value="0">Qualquer Avaliação</option>
-                                <option value="3">3+ Estrelas</option>
-                                <option value="4">4+ Estrelas</option>
-                                <option value="4.5">4.5+ Estrelas</option>
+                                <option value="0">Any Rating</option>
+                                <option value="3">3+ Stars</option>
+                                <option value="4">4+ Stars</option>
+                                <option value="4.5">4.5+ Stars</option>
                             </select>
                             
                             <select 
                                 value={filters.sortBy} 
                                 onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
                             >
-                                <option value="popularity">Popularidade</option>
-                                <option value="price-low">Menor Preço</option>
-                                <option value="price-high">Maior Preço</option>
-                                <option value="rating">Melhor Avaliação</option>
+                                <option value="popularity">Popularity</option>
+                                <option value="price-low">Lowest Price</option>
+                                <option value="price-high">Highest Price</option>
+                                <option value="rating">Best Rating</option>
                             </select>
                         </div>
                     </div>
@@ -254,12 +197,12 @@ const AgentsPage = () => {
                                     <div className="agent-category">{agent.category}</div>
                                     <p className="agent-description">{agent.description}</p>
                                     <div className="agent-footer">
-                                        <div className="agent-price">R${agent.price}/hora</div>
+                                        <div className="agent-price">${agent.price}/hour</div>
                                         <div className="agent-rating">
                                             {'★'.repeat(Math.floor(agent.rating))} {agent.rating}
                                         </div>
                                     </div>
-                                    <button className="btn-view-profile">Ver Perfil</button>
+                                    <button className="btn-view-profile">View Profile</button>
                                 </div>
                             </div>
                         ))}
