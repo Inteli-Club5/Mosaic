@@ -1,25 +1,29 @@
 {
-  "name": "frontend",
+  "name": "mosaic-frontend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "description": "Mosaic - Marketplace de Agentes de IA",
   "scripts": {
-    "start": "npm run build-client && node index.js",
-    "dev": "npm run dev-client & nodemon index.js",
-    "build-client": "npm run clean && parcel build client/src/index.html --out-dir client/dist",
-    "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
-    "clean": "rmdir /s /q .cache client\\dist",
-    "parcel": "parcel client/src/index.html --out-dir client/dist"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
-  "keywords": [],
-  "author": "Club5",
-  "license": "MIT",
-  "description": "Descentralized AI Services Marketplace",
   "dependencies": {
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10",
-    "parcel-bundler": "^1.12.5",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.4.0"
-  }
-}
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "vite": "^5.0.0"
+  },
+  "author": "Mosaic Team",
+  "license": "MIT"
+} 
