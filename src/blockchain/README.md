@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mosaic is a decentralized AI Agent Marketplace that enables users to access, purchase, and utilize AI agents through blockchain-based access control. The platform integrates with **Hedera Hashgraph** for high-performance blockchain operations, **Privy** for seamless wallet authentication, and **Walrus** for enhanced user experience and wallet management.
+Mosaic is a decentralized AI Agent Marketplace that enables users to access, purchase, and utilize AI agents through blockchain-based access control. The platform integrates with **Hedera** for high-performance blockchain operations, **Privy** for seamless wallet authentication, and **Walrus** for enhanced user experience and storage management.
 
 ## Architecture
 
