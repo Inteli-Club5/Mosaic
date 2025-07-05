@@ -8,7 +8,7 @@
 
 <sup>Source: Material produced by the authors (2025)</sup>
 
-## Mosaic: piece together your digital identity
+## Mosaic: Piecing Together Intelligence, One Agent at a Time
 
 [**Demo video**](./)
 
