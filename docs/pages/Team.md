@@ -1,0 +1,5 @@
+# 11. Team
+
+| [![Victor Garcia](../img/victor.jpg)](https://www.linkedin.com/in/victor-garcia-dos-santos/) | [![Kethlen Martins](../img/keth.jpg)](https://www.linkedin.com/in/kethlenmartins/) | [![Davi Abreu](../img/davi.jpg)](https://www.linkedin.com/in/davi-abreu-da-silveira/) |
+| :---------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
+|         [**Victor Garcia**](https://www.linkedin.com/in/victor-garcia-dos-santos/)        |         [**Kethlen Martins**](https://www.linkedin.com/in/kethlenmartins/)         |        [**Davi Abreu**](https://www.linkedin.com/in/davi-abreu-da-silveira/)       | 
