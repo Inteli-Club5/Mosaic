@@ -18,6 +18,8 @@
 
 [**Slides**](https://www.canva.com/design/DAGsPRGA5WU/4LQJ--QUBoculGqMcSkE3w/edit?utm_content=DAGsPRGA5WU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+[**Gitbook Docs**](https://mosaic-7.gitbook.io/mosaic-docs)
+
 # Table of Contents
 - [1. Introduction](#1-introduction)
 - [2. Problem](#2-problem)
