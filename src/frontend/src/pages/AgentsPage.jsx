@@ -4,6 +4,7 @@ import { ROUTES } from '../constants/routes';
 import { AGENTS_DATA } from '../constants/agents';
 import { cn } from '../lib/utils';
 import { InteractiveGridPattern } from '../components/magicui/interactive-grid-pattern';
+import Footer from '../components/Footer';
 
 
 const AgentsPage = () => {
@@ -14,10 +15,9 @@ const AgentsPage = () => {
     const [newMessage, setNewMessage] = useState('');
     const [showAgents, setShowAgents] = useState(true);
     
+    const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({
         category: '',
-        minPrice: 0,
-        maxPrice: 500,
         minRating: 0,
         sortBy: 'popularity'
     });
@@ -48,10 +48,13 @@ const AgentsPage = () => {
     };
 
     const filteredAgents = AGENTS_DATA.filter(agent => {
+        const matchesSearch = !searchTerm || 
+            agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            agent.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            agent.category.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = !filters.category || agent.category === filters.category;
-        const matchesPrice = agent.price >= filters.minPrice && agent.price <= filters.maxPrice;
         const matchesRating = agent.rating >= filters.minRating;
-        return matchesCategory && matchesPrice && matchesRating;
+        return matchesSearch && matchesCategory && matchesRating;
     });
 
     const sortedAgents = [...filteredAgents].sort((a, b) => {
@@ -168,24 +171,17 @@ const AgentsPage = () => {
             </section>
 
             {/* Transition Area */}
-            <div className={`transition-area ${showAgents ? 'show' : ''}`} style={{ marginTop: '40vh' }}>
-                <style jsx>{`
-                    @media (max-width: 768px) {
-                        .transition-area {
-                            margin-top: 360px !important;
-                        }
-                    }
-                    @media (max-width: 480px) {
-                        .transition-area {
-                            margin-top: 320px !important;
-                        }
-                    }
-                `}</style>
+            <div className={`transition-area ${showAgents ? 'show' : ''}`} style={{ marginTop: '100vh' }}>
                 <div className="gradient-transition"></div>
-                <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '80px' }}>
-                    <div className="text-center py-8">
-                        <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-6 rounded-full"></div>
-                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Available Agents</h2>
+                <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '20px' }}>
+                    <div className="text-center py-3">
+                        <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-4 rounded-full"></div>
+                        <h2 className="text-3xl font-bold mb-3" style={{
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                        }}>Available Agents</h2>
                         <p className="text-gray-600">Discover and connect with specialized AI agents</p>
                     </div>
                 </div>
@@ -194,10 +190,25 @@ const AgentsPage = () => {
             {/* Agents Grid Section */}
             <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
                 <div className="container bg-white rounded-t-3xl shadow-lg">
-                    <div className="px-6 py-8">
-                    {/* Filters */}
+                    <div className="px-6 py-4">
+                    {/* Search and Filters */}
                     <div className="filters-section">
                         <div className="filters-top">
+                            <div className="search-input-container">
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Search agents..."
+                                    className="filters-search-input"
+                                />
+                                <div className="search-icon">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            
                             <select 
                                 value={filters.category} 
                                 onChange={(e) => setFilters({...filters, category: e.target.value})}
@@ -209,17 +220,6 @@ const AgentsPage = () => {
                                 <option value="Development">Development</option>
                                 <option value="Design">Design</option>
                             </select>
-                            
-                            <div className="price-filter">
-                                <label>Price: ${filters.minPrice} - ${filters.maxPrice}/hour</label>
-                                <input 
-                                    type="range" 
-                                    min="0" 
-                                    max="500" 
-                                    value={filters.maxPrice}
-                                    onChange={(e) => setFilters({...filters, maxPrice: e.target.value})}
-                                />
-                            </div>
                             
                             <select 
                                 value={filters.minRating} 
@@ -278,6 +278,9 @@ const AgentsPage = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 };
