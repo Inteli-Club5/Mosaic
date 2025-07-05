@@ -9,15 +9,17 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="nav-wrapper">
-          <div className="logo">
-            <img src="./logo-big.svg" alt="Mosaic" />
-          </div>
+          <a href={ROUTES.HOME} className="logo-link">
+            <div className="logo">
+              <img src="./logo-big.svg" alt="Mosaic" />
+            </div>
+          </a>
           <div className="auth-buttons">
             <button 
               className="btn-register"
               onClick={() => navigate(ROUTES.AGENTS)}
             >
-              Go to app
+              Go to dApp
             </button>
           </div>
         </div>

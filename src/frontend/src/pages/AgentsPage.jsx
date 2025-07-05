@@ -5,6 +5,8 @@ import { AGENTS_DATA } from '../constants/agents';
 import { cn } from '../lib/utils';
 import { InteractiveGridPattern } from '../components/magicui/interactive-grid-pattern';
 import Footer from '../components/Footer';
+import { usePrivy } from "@privy-io/react-auth";
+import HeaderPrivy from '../components/HeaderPrivy';
 
 
 const AgentsPage = () => {
@@ -34,7 +36,6 @@ const AgentsPage = () => {
                 text: newMessage 
             }]);
             
-            // Simulate orchestrator agent response
             setTimeout(() => {
                 setChatMessages(prev => [...prev, {
                     id: prev.length + 1,
@@ -72,26 +73,8 @@ const AgentsPage = () => {
 
     return (
         <div className="agents-page">
-            {/* Header */}
             <header>
-                <div className="container">
-                    <div className="nav-wrapper">
-                        <div className="logo">
-                            <img src="./logo-big.svg" alt="Mosaic Logo" />
-                        </div>
-                        <nav>
-                            <ul>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.HOME); }}>Home</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.AGENTS); }} className="active">Agents</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.CREATE_AGENT); }}>Register Agent</a></li>
-                            </ul>
-                        </nav>
-                        <div className="auth-buttons">
-                            <button className="btn-login">Login</button>
-                            <button className="btn-register">Register</button>
-                        </div>
-                    </div>
-                </div>
+                <HeaderPrivy/>
             </header>
 
             {/* Grid Background - Reduced height */}
@@ -169,25 +152,7 @@ const AgentsPage = () => {
                     </div>
                 </div>
             </section>
-
-            {/* Transition Area */}
-            <div className={`transition-area ${showAgents ? 'show' : ''}`} style={{ marginTop: '100vh' }}>
-                <div className="gradient-transition"></div>
-                <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '20px' }}>
-                    <div className="text-center py-3">
-                        <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-4 rounded-full"></div>
-                        <h2 className="text-3xl font-bold mb-3" style={{
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
-                        }}>Available Agents</h2>
-                        <p className="text-gray-600">Discover and connect with specialized AI agents</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Agents Grid Section */}
+            <br/>
             <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
                 <div className="container bg-white rounded-t-3xl shadow-lg">
                     <div className="px-6 py-4">
@@ -246,35 +211,51 @@ const AgentsPage = () => {
                     {/* Agents Grid */}
                     <div className="agents-grid">
                         {sortedAgents.map(agent => (
-                            <div key={agent.id} className="agent-card">
-                                <div className="agent-avatar">{agent.avatar}</div>
-                                <div className="agent-info">
-                                    <div className="agent-header">
-                                        <h3>{agent.name}</h3>
-                                        {agent.verified && <span className="verified-badge">✓</span>}
-                                    </div>
-                                    <div className="agent-category">{agent.category}</div>
-                                    <p className="agent-description">{agent.description}</p>
-                                    <div className="agent-footer">
-                                        <div className="agent-price">${agent.price}/hour</div>
-                                        <div className="agent-rating">
-                                            {'★'.repeat(Math.floor(agent.rating))} {agent.rating}
-                                        </div>
-                                    </div>
-                                    <button className="btn-view-profile">View Profile</button>
-                                </div>
+                        <div key={agent.id} className="agent-card">
+                            <div className="agent-card-header">
+                            <div className="agent-avatar">{agent.avatar}</div>
+                            <div className="agent-main-info">
+                                <h3 className="agent-name">
+                                {agent.name}
+                                {agent.verified && <span className="verified-badge">✓</span>}
+                                </h3>
+                                <div className="agent-category">{agent.category}</div>
                             </div>
+                            </div>
+
+                            <p className="agent-description">{agent.description}</p>
+
+                            <div className="agent-footer">
+                            <div className="agent-price">${agent.price}/hour</div>
+                            <div className="agent-rating">
+                                {'★'.repeat(Math.floor(agent.rating))} <span>{agent.rating}</span>
+                            </div>
+                            </div>
+
+                            <button className="btn-view-profile">View Profile</button>
+                        </div>
                         ))}
                     </div>
-
-                    {/* Pagination */}
                     <div className="pagination">
                         <button className="btn-page active">1</button>
                         <button className="btn-page">2</button>
-                        <button className="btn-page">3</button>
                         <button className="btn-page">...</button>
-                        <button className="btn-page">10</button>
                     </div>
+                    <br/>
+                    <hr/>
+                    <br/>
+                    <div className="agents-grid">
+                        <div className="create-agent-card" onClick={() => navigate('/agents/create')}>
+                        <div className="plus-icon">+</div>
+                            <p>Create Agent</p>
+                        </div>
+                    </div>
+                    <div className="pagination">
+                        <button className="btn-page active">1</button>
+                        <button className="btn-page">2</button>
+                        <button className="btn-page">...</button>
+                    </div>
+                    <br/>
                     </div>
                 </div>
             </section>
