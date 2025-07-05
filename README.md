@@ -386,6 +386,11 @@ The platform's unique approach combines three innovative technologies:
 
 ## 5. Demo
 
+Hedera Testnet
+
+AIAccessMarketplace = 0xF74d6d202ebF8d4497d21F52Aca2A759c317305B
+AIAccessNFT = 0xcAeFEc77F848504C2559801180d8284B5dBcD86E
+
 ## 6. Market and Business Model
 
 _**"\[TRANSITION\_QUESTION]"**_
