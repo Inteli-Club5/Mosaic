@@ -42,10 +42,7 @@ const AgentsPage = () => {
     const { user: privyUser } = usePrivy();
     const { wallets } = useWallets();
 
-    // Global registry sharing state
-    const [registryInfo, setRegistryInfo] = useState(null);
-    const [newRegistryBlobId, setNewRegistryBlobId] = useState('');
-    const [showRegistrySharing, setShowRegistrySharing] = useState(false);
+
 
     // Load agent blob IDs from global registry and fetch agent data
     useEffect(() => {
@@ -84,52 +81,9 @@ const AgentsPage = () => {
         loadAgents();
     }, []);
 
-    // Load registry sharing info
-    useEffect(() => {
-        const loadRegistryInfo = async () => {
-            const info = await walrusService.getRegistrySharingInfo();
-            setRegistryInfo(info);
-        };
-        loadRegistryInfo();
-    }, [agents]);
 
-    // Handle adding a shared registry
-    const handleAddSharedRegistry = async () => {
-        if (!newRegistryBlobId.trim()) {
-            alert('Please enter a valid registry blob ID');
-            return;
-        }
 
-        const success = await walrusService.addSharedRegistry(newRegistryBlobId.trim());
-        if (success) {
-            alert('Registry added successfully! Refreshing agents...');
-            setNewRegistryBlobId('');
-            
-            // Refresh agents from the updated registry
-            const globalBlobIds = await walrusService.getAllAgentBlobIds();
-            setAgentBlobIds(globalBlobIds);
-            
-            const agentPromises = globalBlobIds.map(async (blobId) => {
-                try {
-                    const agentData = await walrusService.getAgentData(blobId);
-                    return { ...agentData, blobId };
-                } catch (error) {
-                    console.error(`Error fetching agent with blob ID ${blobId}:`, error);
-                    return null;
-                }
-            });
-            
-            const agentResults = await Promise.all(agentPromises);
-            const validAgents = agentResults.filter(agent => agent !== null);
-            setAgents(validAgents);
-            
-            // Update registry info
-            const info = await walrusService.getRegistrySharingInfo();
-            setRegistryInfo(info);
-        } else {
-            alert('Failed to add registry. Please check the blob ID and try again.');
-        }
-    };
+
 
     // Listen for new agents created and refresh from global registry
     useEffect(() => {
@@ -340,73 +294,7 @@ const AgentsPage = () => {
             <div className="container">
                 <h1>AI Agents Marketplace</h1>
                 
-                {/* Global Registry Sharing Section */}
-                <div className="registry-sharing-section">
-                    <div className="registry-info">
-                        <h3>🌍 Global Registry</h3>
-                        <p>Total agents in global registry: <strong>{registryInfo?.totalAgents || 0}</strong></p>
-                        <button 
-                            className="btn-secondary" 
-                            onClick={() => setShowRegistrySharing(!showRegistrySharing)}
-                        >
-                            {showRegistrySharing ? 'Hide' : 'Share'} Registry
-                        </button>
-                    </div>
-                    
-                    {showRegistrySharing && (
-                        <div className="registry-sharing-form">
-                            <div className="sharing-section">
-                                <h4>Share Your Registry</h4>
-                                <p>Share this blob ID with other users to let them see your agents:</p>
-                                <div className="registry-blob-id">
-                                    <input 
-                                        type="text" 
-                                        value={registryInfo?.currentRegistryBlobId || 'No registry created yet'} 
-                                        readOnly 
-                                        className="registry-input"
-                                    />
-                                    <button 
-                                        className="btn-primary"
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(registryInfo?.currentRegistryBlobId || '');
-                                            alert('Registry blob ID copied to clipboard!');
-                                        }}
-                                        disabled={!registryInfo?.currentRegistryBlobId}
-                                    >
-                                        Copy
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div className="adding-section">
-                                <h4>Add Another User's Registry</h4>
-                                <p>Enter a registry blob ID shared by another user:</p>
-                                <div className="registry-blob-id">
-                                    <input 
-                                        type="text" 
-                                        value={newRegistryBlobId}
-                                        onChange={(e) => setNewRegistryBlobId(e.target.value)}
-                                        placeholder="Enter registry blob ID here..."
-                                        className="registry-input"
-                                    />
-                                    <button 
-                                        className="btn-primary"
-                                        onClick={handleAddSharedRegistry}
-                                        disabled={!newRegistryBlobId.trim()}
-                                    >
-                                        Add Registry
-                                    </button>
-                                    {chatMessages.some(m => m.requiresNft) && (
-                                        <div className="chat-followup-options">
-                                            <button onClick={handleContinueWithAgent}>✅ Continue with Agent</button>
-                                            <button onClick={handleExploreOthers}>🔁 Explore other options</button>
-                                        </div>
-                                        )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
+
 
                 {/* Filters Section */}
                 <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
