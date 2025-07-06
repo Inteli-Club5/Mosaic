@@ -54,6 +54,56 @@ class WalrusService {
     }
 
     /**
+     * Store raw data on Walrus
+     * @param {string} data - The raw data to store
+     * @returns {Promise<string>} - The blob ID
+     */
+    async storeData(data) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/walrus/blobs`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    data: data
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result.blobId;
+        } catch (error) {
+            console.error('Error storing data on Walrus:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get raw data from Walrus
+     * @param {string} blobId - The blob ID to retrieve
+     * @returns {Promise<string>} - The raw data
+     */
+    async getData(blobId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/walrus/blobs/${blobId}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.text();
+            return data;
+        } catch (error) {
+            console.error('Error retrieving data from Walrus:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Store NFT metadata on Walrus
      * @param {Object} metadata - NFT metadata object
      * @returns {Promise<string>} Blob ID
