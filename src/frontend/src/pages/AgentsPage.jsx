@@ -10,8 +10,6 @@ import walrusService from '../services/walrusService';
 
 
 const AgentsPage = () => {
-
-    const { user } = usePrivy();
     const [chatMessages, setChatMessages] = useState([
         { id: 1, sender: 'orchestrator', text: 'Hello! I am the orchestrator agent. Tell me what is your problem and I can recomend you a (or more) AI agent that could help you.' }
     ]);
