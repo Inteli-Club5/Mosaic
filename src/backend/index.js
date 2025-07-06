@@ -19,14 +19,8 @@ app.get('/', (req, res) => {
     res.json({
         status: 'OK', 
         message: 'Mosaic AI Agent Marketplace API is running',
-        timestamp: new Date().toISOString()
-    });
-});
-
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Welcome to Mosaic AI Agent Marketplace API',
         version: '1.0.0',
+        timestamp: new Date().toISOString(),
         endpoints: {
             walrus: {
                 storeBlob: '/api/walrus/blobs (POST)',
