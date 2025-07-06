@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { ROUTES } from '../constants/routes';
 import HeaderPrivy from '../components/HeaderPrivy';
 import Footer from '../components/Footer';
+import walrusService from '../services/walrusService';
 
 const CreateAgentPage = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -17,6 +19,8 @@ const CreateAgentPage = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const { user, connectWallet } = usePrivy();
+    const { wallets } = useWallets();
 
     const categories = [
         'Data Analysis',
@@ -54,22 +58,70 @@ const CreateAgentPage = () => {
         if (isStepValid()) {
             setIsSubmitting(true);
             try {
-                // TODO: INTEGRATE API CALL HERE
-                // Use the agentService for API integration:
-                /*
-                import { createAgent } from '../services/agentService';
-                import { usePrivy } from "@privy-io/react-auth";
+                // Check if user has wallet connected for receiving payments
+                if (wallets.length === 0) {
+                    alert('Please connect a wallet to receive payments for your agent. You will be redirected to connect your wallet.');
+                    try {
+                        await connectWallet();
+                        // After wallet connection, user can continue with the submission
+                    } catch (error) {
+                        console.error('Error connecting wallet:', error);
+                        alert('Wallet connection failed. Please try again.');
+                        return;
+                    }
+                }
+
+                const primaryWallet = wallets[0];
+
+                // Prepare agent data for Walrus storage
+                const agentData = {
+                    ...formData,
+                    createdAt: new Date().toISOString(),
+                    id: Date.now().toString(), // Temporary ID generation
+                    status: 'active',
+                    createdBy: user?.id || 'anonymous',
+                    ownerWallet: primaryWallet?.address || null,
+                    ownerEmail: user?.email?.address || null,
+                    paymentWallet: primaryWallet?.address || null, // Wallet for receiving payments
+                    chainId: primaryWallet?.chainId || null
+                };
+
+                // Store agent data on Walrus
+                const blobId = await walrusService.storeAgentData(agentData);
+
+                // Create NFT metadata structure
+                const nftMetadata = {
+                    name: formData.name,
+                    description: formData.description,
+                    image: formData.avatar,
+                    attributes: [
+                        { trait_type: "Category", value: formData.category },
+                        { trait_type: "Price", value: `${formData.price} USDC/hour` },
+                        { trait_type: "Specialties", value: formData.specialties.join(', ') },
+                        { trait_type: "Created", value: new Date().toISOString() }
+                    ],
+                    external_url: `walrus://blob/${blobId}`,
+                    agentDataBlobId: blobId
+                };
+
+                // Store NFT metadata on Walrus
+                const metadataBlobId = await walrusService.storeNFTMetadata(nftMetadata);
+
+                // Store the agent blob ID in localStorage for the AgentsPage to use
+                const currentBlobIds = JSON.parse(localStorage.getItem('agentBlobIds') || '[]');
+                const updatedBlobIds = [...currentBlobIds, blobId];
+                localStorage.setItem('agentBlobIds', JSON.stringify(updatedBlobIds));
+
+                // Dispatch event to notify AgentsPage of new agent
+                window.dispatchEvent(new CustomEvent('newAgentCreated', { 
+                    detail: { blobId, metadataBlobId } 
+                }));
+
+                // TODO: Here you can integrate with your blockchain contracts
+                // to mint NFTs using the metadataBlobId as the tokenURI
                 
-                const { user } = usePrivy();
-                const userToken = await user?.getAccessToken(); // Get Privy token
-                
-                const result = await createAgent(formData, userToken);
-                console.log('Agent created successfully:', result);
-                */
-                
-                // Temporary success message (remove when API is integrated)
-                console.log('Publishing agent:', formData);
                 alert('Agent published successfully!');
+                
                 navigate(ROUTES.AGENTS);
                 
             } catch (error) {
@@ -273,7 +325,35 @@ const CreateAgentPage = () => {
                                         <small>Set a fair price based on your agent's complexity</small>
                                     </div>
 
-
+                                    <div className="form-group">
+                                        <label>Payment Wallet</label>
+                                        {wallets.length > 0 ? (
+                                            <div className="wallet-connected">
+                                                <div className="wallet-status connected">
+                                                    <span className="status-icon">✅</span>
+                                                    <span className="wallet-address">
+                                                        {wallets[0]?.address?.slice(0, 8)}...{wallets[0]?.address?.slice(-6)}
+                                                    </span>
+                                                </div>
+                                                <small>Payments will be sent to this wallet address</small>
+                                            </div>
+                                        ) : (
+                                            <div className="wallet-not-connected">
+                                                <div className="wallet-status not-connected">
+                                                    <span className="status-icon">⚠️</span>
+                                                    <span>No wallet connected</span>
+                                                </div>
+                                                <button 
+                                                    type="button"
+                                                    className="btn-secondary"
+                                                    onClick={() => connectWallet()}
+                                                >
+                                                    Connect Wallet for Payments
+                                                </button>
+                                                <small>Connect a wallet to receive payments for your agent</small>
+                                            </div>
+                                        )}
+                                    </div>
 
                                     <div className="terms-section">
                                         <label className="checkbox-label">
