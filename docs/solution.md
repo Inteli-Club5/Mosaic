@@ -183,7 +183,7 @@ Sarah is a experienced machine learning engineer who has worked at tech companie
 
 #### How Mosaic Helps Sarah
 
-* **90% Revenue Share:** Keeps significantly more of her earnings compared to traditional platforms
+* **85% Revenue Share:** Keeps significantly more of her earnings compared to traditional platforms
 * **NFT Ownership:** Maintains true ownership of her AI agents through blockchain technology
 * **Flexible Pricing:** Can offer micro-transactions, monthly access, and enterprise licensing
 * **Built-in Discovery:** Platform's search and recommendation system helps users find her specialized agents
