@@ -1,7 +1,7 @@
 export const ROUTES = {
   HOME: '/',
   AGENTS: '/agents',
-  CREATE_AGENT: '/agents/create',
+  CREATE_AGENT: '/create',
   TEST: '/test',
   MARKETPLACE: '/marketplace',
   DOCUMENTATION: '/documentation',

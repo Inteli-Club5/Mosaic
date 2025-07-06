@@ -226,7 +226,7 @@ const AgentsPage = () => {
                             <p className="agent-description">{agent.description}</p>
 
                             <div className="agent-footer">
-                            <div className="agent-price">${agent.price}/hour</div>
+                            <div className="agent-price">USDC {agent.price}/hour</div>
                             <div className="agent-rating">
                                 {'★'.repeat(Math.floor(agent.rating))} <span>{agent.rating}</span>
                             </div>
@@ -245,7 +245,7 @@ const AgentsPage = () => {
                     <hr/>
                     <br/>
                     <div className="agents-grid">
-                        <div className="create-agent-card" onClick={() => navigate('/agents/create')}>
+                        <div className="create-agent-card" onClick={() => navigate('/create')}>
                         <div className="plus-icon">+</div>
                             <p>Create Agent</p>
                         </div>

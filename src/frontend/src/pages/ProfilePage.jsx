@@ -1,10 +1,13 @@
 import React from 'react';
 import { usePrivy } from '@privy-io/react-auth';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../constants/routes';
 import HeaderPrivy from '../components/HeaderPrivy';
 import Footer from '../components/Footer';
 
 const ProfilePage = () => {
   const { user, authenticated } = usePrivy();
+  const navigate = useNavigate();
 
   if (!authenticated) {
     return (
@@ -81,19 +84,29 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <hr/>
-      <br/>
-      <br/>
-      <div className="agents-grid">
-                    <br/>
-                    <div className="agents-grid">
-                        <div className="create-agent-card" onClick={() => navigate('/agents/create')}>
-                        <div className="plus-icon">+</div>
-                            <p>Create Agent</p>
-                        </div>
-                    </div>
-                    <br/>
-                    </div>
+      <div className="profile-section">
+        <h2>Agent Management</h2>
+        <div className="profile-info">
+          <div className="info-item">
+            <span className="label">Actions:</span>
+            <div className="value">
+              <button 
+                className="btn-primary" 
+                onClick={() => navigate(ROUTES.CREATE_AGENT)}
+                style={{ marginRight: '1rem' }}
+              >
+                Create New Agent
+              </button>
+              <button 
+                className="btn-secondary" 
+                onClick={() => navigate(ROUTES.AGENTS)}
+              >
+                View All Agents
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );

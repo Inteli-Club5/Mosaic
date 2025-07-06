@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
+import HeaderPrivy from '../components/HeaderPrivy';
+import Footer from '../components/Footer';
 
 const CreateAgentPage = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -10,9 +12,11 @@ const CreateAgentPage = () => {
         avatar: '',
         description: '',
         price: '',
+        rating: 5,
         specialties: [],
         experience: ''
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const categories = [
@@ -47,14 +51,34 @@ const CreateAgentPage = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (isStepValid()) {
-            // Here would be the API call to create the agent
-            console.log('Publishing agent:', formData);
-            
-            // Redirect to agents page after successful submission
-            alert('Agent published successfully!');
-            navigate(ROUTES.AGENTS);
+            setIsSubmitting(true);
+            try {
+                // TODO: INTEGRATE API CALL HERE
+                // Use the agentService for API integration:
+                /*
+                import { createAgent } from '../services/agentService';
+                import { usePrivy } from "@privy-io/react-auth";
+                
+                const { user } = usePrivy();
+                const userToken = await user?.getAccessToken(); // Get Privy token
+                
+                const result = await createAgent(formData, userToken);
+                console.log('Agent created successfully:', result);
+                */
+                
+                // Temporary success message (remove when API is integrated)
+                console.log('Publishing agent:', formData);
+                alert('Agent published successfully!');
+                navigate(ROUTES.AGENTS);
+                
+            } catch (error) {
+                console.error('Error creating agent:', error);
+                alert('Failed to publish agent. Please try again.');
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -67,7 +91,7 @@ const CreateAgentPage = () => {
             case 3:
                 return formData.description.trim() && formData.description.length >= 50;
             case 4:
-                return formData.price && parseFloat(formData.price) > 0;
+                return formData.price && parseFloat(formData.price) > 0 && formData.rating >= 1 && formData.rating <= 5;
             default:
                 return false;
         }
@@ -90,27 +114,7 @@ const CreateAgentPage = () => {
 
     return (
         <div className="create-agent-page">
-            {/* Header */}
-            <header>
-                <div className="container">
-                    <div className="nav-wrapper">
-                        <div className="logo">
-                            <img src="./logo.png" alt="Mosaic Logo" />
-                        </div>
-                        <nav>
-                            <ul>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.HOME); }}>Home</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.AGENTS); }}>Agents</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.CREATE_AGENT); }} className="active">Register Agent</a></li>
-                            </ul>
-                        </nav>
-                        <div className="auth-buttons">
-                            <button className="btn-login">Login</button>
-                            <button className="btn-register">Register</button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <HeaderPrivy />
 
             <div className="container">
                 <div className="create-agent-content">
@@ -256,7 +260,7 @@ const CreateAgentPage = () => {
                                     <div className="form-group">
                                         <label>Price per Hour *</label>
                                         <div className="price-input">
-                                            <span className="currency">$</span>
+                                            <span className="currency">USDC</span>
                                             <input
                                                 type="number"
                                                 value={formData.price}
@@ -270,14 +274,34 @@ const CreateAgentPage = () => {
                                         <small>Set a fair price based on your agent's complexity</small>
                                     </div>
 
+                                    <div className="form-group">
+                                        <label>Initial Rating *</label>
+                                        <div className="rating-input">
+                                            <div className="rating-stars">
+                                                {[1, 2, 3, 4, 5].map(star => (
+                                                    <button
+                                                        key={star}
+                                                        type="button"
+                                                        className={`star ${star <= formData.rating ? 'filled' : ''}`}
+                                                        onClick={() => handleInputChange('rating', star)}
+                                                    >
+                                                        ★
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <span className="rating-text">{formData.rating}/5 stars</span>
+                                        </div>
+                                        <small>Set the initial rating for your agent (can be updated later)</small>
+                                    </div>
+
                                     <div className="price-suggestions">
                                         <h4>Price suggestions by category:</h4>
                                         <ul>
-                                            <li>Data Analysis: $40-80/hour</li>
-                                            <li>Marketing: $30-60/hour</li>
-                                            <li>Development: $50-100/hour</li>
-                                            <li>Design: $35-70/hour</li>
-                                            <li>Consulting: $60-120/hour</li>
+                                            <li>Data Analysis: USDC 40-80/hour</li>
+                                            <li>Marketing: USDC 30-60/hour</li>
+                                            <li>Development: USDC 50-100/hour</li>
+                                            <li>Design: USDC 35-70/hour</li>
+                                            <li>Consulting: USDC 60-120/hour</li>
                                         </ul>
                                     </div>
 
@@ -311,9 +335,9 @@ const CreateAgentPage = () => {
                                         type="button" 
                                         onClick={handleSubmit} 
                                         className="btn-primary"
-                                        disabled={!isStepValid()}
+                                        disabled={!isStepValid() || isSubmitting}
                                     >
-                                        Publish Agent
+                                        {isSubmitting ? 'Publishing...' : 'Publish Agent'}
                                     </button>
                                 )}
                             </div>
@@ -339,19 +363,20 @@ const CreateAgentPage = () => {
                                     </p>
                                     <div className="agent-footer">
                                         <div className="agent-price">
-                                            ${formData.price || '0'}/hour
+                                            USDC {formData.price || '0'}/hour
                                         </div>
                                         <div className="agent-rating">
-                                            ★★★★★ New
+                                            {'★'.repeat(formData.rating)}{'☆'.repeat(5 - formData.rating)} {formData.rating}/5
                                         </div>
                                     </div>
-                                    <button className="btn-view-profile">View Profile</button>
+                                    <button className="btn-view-profile">View Agent</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
