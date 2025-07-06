@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Use relative URL in production since backend serves both API and frontend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD ? window.location.origin : 'http://localhost:3000');
 
 class WalrusService {
     /**
