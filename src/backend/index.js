@@ -16,7 +16,11 @@ app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 
-app.get('/', (req, res) => {
+app.use('/api/walrus', walrusRoutes);
+app.use('/api/nft', nftRoutes);
+
+// API status endpoint
+app.get('/api/status', (req, res) => {
     res.json({
         status: 'OK', 
         message: 'Mosaic AI Agent Marketplace API is running',
@@ -37,11 +41,8 @@ app.get('/', (req, res) => {
     });
 });
 
-app.use('/api/walrus', walrusRoutes);
-app.use('/api/nft', nftRoutes);
-
 // Serve static files from frontend build in production
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
     const frontendBuildPath = path.join(__dirname, '../frontend/dist');
     
     console.log('📁 Serving static files from:', frontendBuildPath);
