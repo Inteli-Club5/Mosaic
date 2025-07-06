@@ -1,6 +1,4 @@
-# README
-
-## ETHGlobal Hackathon
+# ETHGlobal Hackathon
 
 <sub>Figure 1 - Logo</sub>
 
@@ -8,7 +6,7 @@
 
 <sup>Source: Material produced by the authors (2025)</sup>
 
-## Mosaic: Piecing Together Intelligence, One Agent at a Time
+# Mosaic: Piecing Together Intelligence, One Agent at a Time
 
 [**Demo video**](./)
 
@@ -385,6 +383,18 @@ The platform's unique approach combines three innovative technologies:
 - Postman for API testing and documentation
 
 ## 5. Demo
+
+**Hedera Testnet**
+
+**Verifiable Contract Address**: 0x42dc444aa142f78a8de8c7304bbbcd5b6581fe32
+<br/>
+**AIAccessNFT Contract Address**: 0xcAeFEc77F848504C2559801180d8284B5dBcD86E
+<br/>
+**AIAccessMarketplace Contract Address**: 0xF74d6d202ebF8d4497d21F52Aca2A759c317305B
+
+**Backend API**
+
+API: https://mosaic-backend-api.onrender.com/
 
 ## 6. Market and Business Model
 

@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "npm-9_x"]
+
+[phases.build]
+cmds = [
+    "cd src/backend",
+    "npm ci"
+]
+
+[phases.start]
+cmd = "cd src/backend && npm start"
+
+[variables]
+NODE_ENV = "production" 

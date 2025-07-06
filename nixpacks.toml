@@ -1,0 +1,15 @@
+# Monorepo Configuration - Backend serves Frontend
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmd = "cd src/frontend && npm install && cd ../backend && npm install"
+
+[phases.build]
+cmd = "cd src/frontend && npm run build"
+
+[phases.start]
+cmd = "cd src/backend && npm start"
+
+[variables]
+NODE_ENV = "production" 

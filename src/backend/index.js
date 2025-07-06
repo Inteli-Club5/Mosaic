@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const hederaService = require('./services/hederaService');
@@ -19,14 +20,8 @@ app.get('/', (req, res) => {
     res.json({
         status: 'OK', 
         message: 'Mosaic AI Agent Marketplace API is running',
-        timestamp: new Date().toISOString()
-    });
-});
-
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Welcome to Mosaic AI Agent Marketplace API',
         version: '1.0.0',
+        timestamp: new Date().toISOString(),
         endpoints: {
             walrus: {
                 storeBlob: '/api/walrus/blobs (POST)',
@@ -45,12 +40,36 @@ app.get('/', (req, res) => {
 app.use('/api/walrus', walrusRoutes);
 app.use('/api/nft', nftRoutes);
 
-app.use('*', (req, res) => {
-    res.status(404).json({
-        error: 'Endpoint not found',
-        path: req.originalUrl
+// Serve static files from frontend build in production
+if (process.env.NODE_ENV === 'production') {
+    const frontendBuildPath = path.join(__dirname, '../frontend/dist');
+    
+    console.log('📁 Serving static files from:', frontendBuildPath);
+    app.use(express.static(frontendBuildPath));
+    
+    // Catch-all handler for SPA routing
+    app.get('*', (req, res) => {
+        // If it's an API route, return 404
+        if (req.path.startsWith('/api')) {
+            res.status(404).json({
+                error: 'API endpoint not found',
+                path: req.originalUrl
+            });
+        } else {
+            // Serve the React app's index.html for all other routes
+            res.sendFile(path.join(frontendBuildPath, 'index.html'));
+        }
     });
-});
+} else {
+    // Development mode - only handle API routes
+    app.use('*', (req, res) => {
+        res.status(404).json({
+            error: 'Endpoint not found',
+            path: req.originalUrl,
+            message: 'In development mode, frontend runs on separate port (5173)'
+        });
+    });
+}
 
 app.use((err, req, res, next) => {
     console.error(err.stack); 
