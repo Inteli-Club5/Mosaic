@@ -1,8 +1,8 @@
-# 3. Solution
+# Solution
 
 Mosaic rebuilds the AI economy from the ground up using three breakthrough innovations: NFT-based access control, creator-first economics, and decentralized infrastructure.
 
-### The NFT Access Revolution
+## The NFT Access Revolution
 
 Instead of traditional subscriptions or one-time purchases, Mosaic introduces "access NFTs" - blockchain tokens that grant time-limited usage rights to specific AI agents. Think of them as digital keys that automatically expire after a set period.
 
@@ -10,11 +10,11 @@ Here's how it works: A business owner needs help with inventory forecasting for 
 
 This model benefits everyone. Users pay only for what they need and own verifiable access rights. Creators get transparent, programmable revenue streams. The blockchain ensures that neither party depends on a centralized platform that could disappear or change terms.
 
-### Creator-First Economics
+## Creator-First Economics
 
 Traditional platforms extract value from creators through high commission fees and opaque revenue sharing. Mosaic flips this model entirely.
 
-Creators keep 85% of all revenue - the highest share in the industry. More importantly, they maintain true ownership of their AI agents through smart contracts. If Mosaic disappeared tomorrow, creators would still own their intellectual property and could deploy it elsewhere.
+Creators keep **90% of all revenue** - the highest share in the industry. More importantly, they maintain true ownership of their AI agents through smart contracts. If Mosaic disappeared tomorrow, creators would still own their intellectual property and could deploy it elsewhere.
 
 The platform supports multiple monetization strategies:
 
@@ -25,7 +25,7 @@ The platform supports multiple monetization strategies:
 
 Sarah Chen, our marketing analytics creator from earlier, could now offer her agent at multiple price points: $2 for a single analysis, $50 for monthly access, or $25,000 for an enterprise license with custom training data.
 
-### Decentralized Infrastructure That Actually Works
+## Decentralized Infrastructure That Actually Works
 
 Mosaic runs on Hedera Hashgraph, which processes transactions in 3-5 seconds for under $0.01 each. This makes micro-payments economically viable while maintaining enterprise-grade security and throughput.
 
@@ -33,18 +33,22 @@ Agent metadata and conversation history are stored on Walrus, a decentralized st
 
 The technical architecture enables something that's never been possible before: truly portable AI services that users can access from anywhere, creators can deploy without platform risk, and enterprises can integrate without vendor lock-in.
 
-### The User Experience Revolution
+## The User Experience Revolution
 
-Despite the sophisticated blockchain infrastructure, Mosaic feels as simple as browsing an app store. Users can sign in with their existing Google or Twitter accounts through Privy's seamless authentication system, which creates and manages Web3 wallets automatically in the background. Users discover agents through intelligent categorization and search, preview capabilities through free interactions, and purchase access with a single click.
+Despite the sophisticated blockchain infrastructure, Mosaic feels as simple as browsing an app store. Users can sign in with their existing Google or Twitter accounts through Privy's seamless authentication system, which creates and manages Web3 wallets automatically in the background. 
+
+Users discover agents through intelligent categorization and search, preview capabilities through free interactions, and purchase access with a single click.
 
 The chat interface supports rich media, real-time collaboration, and seamless handoffs between different specialized agents. An e-commerce business might start with a marketing agent for ad copy, then seamlessly transition to a logistics agent for supply chain optimization, all within the same conversation thread.
 
-### Real-World Impact
+## Real-World Impact
 
 Early beta testing shows remarkable results. AI creators report 3-5x higher revenue compared to traditional platforms, while users achieve 60-80% cost savings compared to consulting alternatives.
 
+**Case Study 1: Small Accounting Firm**
 A small accounting firm used Mosaic to access specialized tax optimization agents during busy season, paying $800 for three months of access instead of hiring a $120,000/year specialist. The AI handled routine optimizations while their human accountants focused on complex client relationships.
 
+**Case Study 2: Freelance Data Scientist**
 A freelance data scientist deployed her customer churn prediction agent on Mosaic and generated $4,200 in revenue during the first month - more than she had earned from traditional consulting work in the previous quarter.
 
 ***"This sounds promising, but who exactly would use this?"***
