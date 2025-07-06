@@ -1,12 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x"]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmd = "cd src/frontend && npm install"
 
 [phases.build]
-cmds = [
-    "cd src/frontend",
-    "npm ci",
-    "npm run build"
-]
+cmd = "cd src/frontend && npm run build"
 
 [phases.start]
 cmd = "cd src/frontend && npm run preview -- --host 0.0.0.0 --port $PORT"
