@@ -3,7 +3,6 @@ node_modules
 npm-debug.log
 .git
 .gitignore
-README.md
 .env
 .nyc_output
 coverage
@@ -15,5 +14,10 @@ dist
 build
 .DS_Store
 docs/
-*.md
-!package*.json 
+.vercel
+.netlify
+
+# Keep important files
+!package*.json
+!src/
+!blockchain/ 

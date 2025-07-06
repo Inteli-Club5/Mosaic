@@ -7,22 +7,21 @@ COPY package.json ./
 COPY src/frontend/package.json ./src/frontend/
 COPY src/backend/package.json ./src/backend/
 
-# Install dependencies for frontend
+# Install frontend dependencies
 WORKDIR /app/src/frontend
 RUN npm install
 
-# Copy frontend source code
-COPY src/frontend/ ./
+# Go back to root and copy the entire project structure
+WORKDIR /app
+COPY . .
 
-# Build frontend
+# Build frontend (now with access to blockchain directory)
+WORKDIR /app/src/frontend
 RUN npm run build
 
-# Install dependencies for backend  
+# Install backend dependencies  
 WORKDIR /app/src/backend
 RUN npm install
-
-# Copy backend source code
-COPY src/backend/ ./
 
 # Expose port
 EXPOSE $PORT
