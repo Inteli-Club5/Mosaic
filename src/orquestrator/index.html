@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chat Hedera Agent</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 2rem; }
+  #chatbox { width: 100%; height: 300px; border: 1px solid #ccc; overflow-y: auto; padding: 1rem; margin-bottom: 1rem; }
+  .user-msg { color: blue; margin-bottom: 0.5rem; }
+  .agent-msg { color: green; margin-bottom: 0.5rem; }
+  input[type="text"] { width: 80%; padding: 0.5rem; }
+  button { padding: 0.5rem 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Chat Hedera Agent</h1>
+
+<div id="chatbox"></div>
+
+<input id="msgInput" type="text" placeholder="Digite sua mensagem..." />
+<button id="sendBtn">Enviar</button>
+
+<script>
+  const chatbox = document.getElementById('chatbox');
+  const msgInput = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  // Função para adicionar mensagem na tela
+  function appendMessage(text, sender) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    div.className = sender === 'user' ? 'user-msg' : 'agent-msg';
+    chatbox.appendChild(div);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  // Mensagem inicial
+  appendMessage('Olá! Em que posso te ajudar?', 'agent');
+
+  // Função para enviar mensagem
+  async function sendMessage() {
+    const message = msgInput.value.trim();
+    if (!message) return;
+
+    appendMessage(message, 'user');
+    msgInput.value = '';
+
+    try {
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+
+      appendMessage(data.reply || 'Sem resposta', 'agent');
+    } catch (err) {
+      appendMessage('Erro na conexão com o servidor.', 'agent');
+      console.error(err);
+    }
+  }
+
+  // Eventos para disparar o envio
+  sendBtn.onclick = sendMessage;
+  msgInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>

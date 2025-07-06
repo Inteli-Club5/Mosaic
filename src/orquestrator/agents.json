@@ -1,0 +1,463 @@
+[
+  {
+    "id": "financial_report_generator",
+    "tasks": [
+      "financial report generation",
+      "financial reporting",
+      "financial statements",
+      "consolidated financial statements",
+      "revenue reports",
+      "balance sheet",
+      "income statement",
+      "cash flow statement",
+      "financial documentation"
+    ],
+    "datatype": "text",
+    "subtype": "financial_documents",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "financial_analyst",
+    "tasks": [
+      "financial analysis",
+      "financial data analysis",
+      "financial insights",
+      "investment analysis",
+      "market analysis",
+      "financial performance analysis",
+      "profitability analysis",
+      "cost analysis"
+    ],
+    "datatype": "text",
+    "subtype": "financial_documents",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "financial_forecaster",
+    "tasks": [
+      "financial forecasting",
+      "financial projections",
+      "predictive financial modeling",
+      "budget forecasting",
+      "revenue forecasting",
+      "financial planning",
+      "cash flow projections",
+      "financial modeling"
+    ],
+    "datatype": "text",
+    "subtype": "financial_documents",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "business_proposal_writer",
+    "tasks": [
+      "business proposal writing",
+      "business proposals",
+      "partnership agreements",
+      "project proposals",
+      "investment proposals",
+      "business plans",
+      "proposal documentation",
+      "partnership documentation",
+      "algorithm_implementation"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "policy_documentor",
+    "tasks": [
+      "policy documentation",
+      "company policies",
+      "procedural documentation",
+      "compliance documentation",
+      "organizational policies",
+      "workflow documentation",
+      "standard operating procedures",
+      "policy creation"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "strategic_planner",
+    "tasks": [
+      "strategic planning",
+      "business strategy",
+      "growth planning",
+      "strategic analysis",
+      "business development",
+      "strategic roadmap",
+      "competitive analysis",
+      "strategic initiatives"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "legal_document_creator",
+    "tasks": [
+      "legal document creation",
+      "contracts",
+      "legal documentation",
+      "legal agreements",
+      "compliance documents",
+      "regulatory filings",
+      "legal contracts",
+      "terms of service"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "training_materials_creator",
+    "tasks": [
+      "training materials",
+      "educational content",
+      "professional development",
+      "learning materials",
+      "training documentation",
+      "course materials",
+      "instructional content",
+      "employee training"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "marketing_materials_creator",
+    "tasks": [
+      "marketing materials",
+      "marketing strategy",
+      "campaign documentation",
+      "marketing plans",
+      "promotional content",
+      "advertising materials",
+      "brand documentation",
+      "marketing campaigns"
+    ],
+    "datatype": "text",
+    "subtype": "business_documents",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "data_processing_automator",
+    "tasks": [
+      "data processing automation",
+      "data manipulation",
+      "data processing scripts",
+      "automated data processing",
+      "data pipeline automation",
+      "data transformation",
+      "batch processing",
+      "data workflows"
+    ],
+    "datatype": "code",
+    "subtype": "scripts",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "web_scraper",
+    "tasks": [
+      "web scraping",
+      "data extraction",
+      "web automation",
+      "web data collection",
+      "automated scraping",
+      "web crawling",
+      "data harvesting",
+      "web data mining"
+    ],
+    "datatype": "code",
+    "subtype": "scripts",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "testing_automator",
+    "tasks": [
+      "testing automation",
+      "automated testing",
+      "test frameworks",
+      "testing scripts",
+      "quality assurance automation",
+      "test suite creation",
+      "automated qa",
+      "testing tools"
+    ],
+    "datatype": "code",
+    "subtype": "scripts",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "algorithm_implementer",
+    "tasks": [
+      "algorithm implementation",
+      "mathematical algorithms",
+      "computational algorithms",
+      "algorithm development",
+      "mathematical functions",
+      "algorithmic solutions",
+      "optimization algorithms",
+      "data structures"
+    ],
+    "datatype": "code",
+    "subtype": "functions",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "data_scientist",
+    "tasks": [
+      "data science",
+      "machine learning models",
+      "statistical analysis",
+      "ml algorithms",
+      "predictive modeling",
+      "data analysis functions",
+      "statistical functions",
+      "ml implementation"
+    ],
+    "datatype": "code",
+    "subtype": "functions",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "backend_developer",
+    "tasks": [
+      "backend development",
+      "server-side functionality",
+      "system integration",
+      "api development",
+      "backend functions",
+      "server programming",
+      "backend architecture",
+      "system functions"
+    ],
+    "datatype": "code",
+    "subtype": "functions",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "defi_developer",
+    "tasks": [
+      "defi development",
+      "decentralized finance",
+      "defi protocols",
+      "automated market maker",
+      "decentralized exchange",
+      "liquidity pools",
+      "yield farming",
+      "defi smart contracts"
+    ],
+    "datatype": "code",
+    "subtype": "smart_contracts",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "blockchain_infrastructure_developer",
+    "tasks": [
+      "blockchain infrastructure",
+      "core blockchain systems",
+      "blockchain architecture",
+      "consensus mechanisms",
+      "node infrastructure",
+      "blockchain protocols",
+      "distributed systems",
+      "blockchain networks"
+    ],
+    "datatype": "code",
+    "subtype": "smart_contracts",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "gaming_blockchain_developer",
+    "tasks": [
+      "gaming blockchain",
+      "blockchain gaming",
+      "gaming smart contracts",
+      "nft gaming",
+      "play-to-earn",
+      "gaming tokens",
+      "blockchain game mechanics",
+      "gaming nfts"
+    ],
+    "datatype": "code",
+    "subtype": "smart_contracts",
+    "nft_required": true,
+    "storage": "hedera_consensus"
+  },
+  {
+    "id": "photo_enhancer",
+    "tasks": [
+      "photo enhancement",
+      "image enhancement",
+      "photo editing",
+      "image quality improvement",
+      "photo optimization",
+      "image correction",
+      "photo filters",
+      "basic photo editing"
+    ],
+    "datatype": "image",
+    "subtype": "editing",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "professional_retoucher",
+    "tasks": [
+      "professional retouching",
+      "advanced image editing",
+      "photo compositing",
+      "professional photo editing",
+      "image manipulation",
+      "advanced retouching",
+      "commercial photo editing",
+      "professional image work"
+    ],
+    "datatype": "image",
+    "subtype": "editing",
+    "nft_required": true,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "creative_compositor",
+    "tasks": [
+      "creative compositing",
+      "artistic compositing",
+      "digital artwork",
+      "creative image work",
+      "artistic image creation",
+      "digital art compositing",
+      "creative image editing",
+      "artistic digital work"
+    ],
+    "datatype": "image",
+    "subtype": "editing",
+    "nft_required": true,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "ui_designer",
+    "tasks": [
+      "ui design",
+      "user interface design",
+      "interface prototypes",
+      "ui wireframes",
+      "user interface prototypes",
+      "ui mockups",
+      "interface design",
+      "user experience design"
+    ],
+    "datatype": "image",
+    "subtype": "prototypes",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "web_designer",
+    "tasks": [
+      "web design",
+      "website design",
+      "web interface design",
+      "responsive design",
+      "website prototypes",
+      "web ui design",
+      "website mockups",
+      "web development design"
+    ],
+    "datatype": "image",
+    "subtype": "prototypes",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "game_designer",
+    "tasks": [
+      "game design",
+      "gaming interface design",
+      "game ui design",
+      "gaming user experience",
+      "game interface prototypes",
+      "gaming design",
+      "game mockups",
+      "interactive game design"
+    ],
+    "datatype": "image",
+    "subtype": "prototypes",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "process_visualizer",
+    "tasks": [
+      "process visualization",
+      "business process diagrams",
+      "process mapping",
+      "workflow visualization",
+      "process flowcharts",
+      "business process modeling",
+      "operational process diagrams",
+      "process documentation"
+    ],
+    "datatype": "image",
+    "subtype": "diagrams",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "technical_documentor",
+    "tasks": [
+      "technical documentation",
+      "system architecture diagrams",
+      "technical diagrams",
+      "architecture documentation",
+      "system documentation",
+      "technical specifications",
+      "engineering documentation",
+      "technical architecture"
+    ],
+    "datatype": "image",
+    "subtype": "diagrams",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  },
+  {
+    "id": "business_modeler",
+    "tasks": [
+      "business modeling",
+      "business strategy visualization",
+      "business process modeling",
+      "strategic planning diagrams",
+      "business architecture",
+      "organizational modeling",
+      "business strategy diagrams",
+      "enterprise modeling"
+    ],
+    "datatype": "image",
+    "subtype": "diagrams",
+    "nft_required": false,
+    "storage": "hedera_file_service"
+  }
+]
