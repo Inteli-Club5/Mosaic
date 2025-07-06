@@ -107,7 +107,10 @@ const CreateAgentPage = () => {
                 // Store NFT metadata on Walrus
                 const metadataBlobId = await walrusService.storeNFTMetadata(nftMetadata);
 
-                // Store the agent blob ID in localStorage for the AgentsPage to use
+                // Add agent to global registry (visible to all users)
+                await walrusService.addAgentToGlobalRegistry(blobId);
+
+                // Also keep in localStorage for backwards compatibility and faster local access
                 const currentBlobIds = JSON.parse(localStorage.getItem('agentBlobIds') || '[]');
                 const updatedBlobIds = [...currentBlobIds, blobId];
                 localStorage.setItem('agentBlobIds', JSON.stringify(updatedBlobIds));

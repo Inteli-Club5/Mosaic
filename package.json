@@ -1,0 +1,19 @@
+{
+  "name": "mosaic",
+  "version": "1.0.0",
+  "description": "AI Agent Marketplace with Walrus Integration",
+  "scripts": {
+    "start": "npm start --prefix src/frontend",
+    "build": "npm run build --prefix src/frontend",
+    "dev": "concurrently \"npm run dev --prefix src/frontend\" \"npm start --prefix src/backend\"",
+    "install-all": "npm install --prefix src/frontend && npm install --prefix src/backend",
+    "deploy-frontend": "cd src/frontend && npm ci && npm run build && npm run preview -- --host 0.0.0.0 --port $PORT",
+    "deploy-backend": "cd src/backend && npm ci && npm start"
+  },
+  "keywords": ["ai", "blockchain", "walrus", "marketplace"],
+  "author": "Mosaic Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+} 

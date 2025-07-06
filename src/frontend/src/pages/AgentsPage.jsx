@@ -42,17 +42,24 @@ const AgentsPage = () => {
     const { user } = usePrivy();
     const { wallets } = useWallets();
 
-    // Load agent blob IDs from localStorage and fetch agent data
+    // Global registry sharing state
+    const [registryInfo, setRegistryInfo] = useState(null);
+    const [newRegistryBlobId, setNewRegistryBlobId] = useState('');
+    const [showRegistrySharing, setShowRegistrySharing] = useState(false);
+
+    // Load agent blob IDs from global registry and fetch agent data
     useEffect(() => {
         const loadAgents = async () => {
             try {
                 setLoading(true);
-                // Get stored blob IDs from localStorage
-                const storedBlobIds = JSON.parse(localStorage.getItem('agentBlobIds') || '[]');
-                setAgentBlobIds(storedBlobIds);
+                
+                // Get all agent blob IDs from the global registry (visible to all users)
+                const globalBlobIds = await walrusService.getAllAgentBlobIds();
+                console.log('Global agent blob IDs:', globalBlobIds);
+                setAgentBlobIds(globalBlobIds);
 
                 // Fetch agent data from Walrus for each blob ID
-                const agentPromises = storedBlobIds.map(async (blobId) => {
+                const agentPromises = globalBlobIds.map(async (blobId) => {
                     try {
                         const agentData = await walrusService.getAgentData(blobId);
                         return { ...agentData, blobId };
@@ -64,6 +71,7 @@ const AgentsPage = () => {
 
                 const agentResults = await Promise.all(agentPromises);
                 const validAgents = agentResults.filter(agent => agent !== null);
+                console.log('Loaded agents from global registry:', validAgents);
                 setAgents(validAgents);
             } catch (error) {
                 setError('Failed to load agents');
@@ -76,19 +84,87 @@ const AgentsPage = () => {
         loadAgents();
     }, []);
 
-    // Listen for new agents created (you can call this from CreateAgentPage after successful creation)
+    // Load registry sharing info
     useEffect(() => {
-        const handleNewAgent = (event) => {
-            const { blobId } = event.detail;
-            const currentBlobIds = JSON.parse(localStorage.getItem('agentBlobIds') || '[]');
-            const updatedBlobIds = [...currentBlobIds, blobId];
-            localStorage.setItem('agentBlobIds', JSON.stringify(updatedBlobIds));
-            setAgentBlobIds(updatedBlobIds);
+        const loadRegistryInfo = async () => {
+            const info = await walrusService.getRegistrySharingInfo();
+            setRegistryInfo(info);
+        };
+        loadRegistryInfo();
+    }, [agents]);
+
+    // Handle adding a shared registry
+    const handleAddSharedRegistry = async () => {
+        if (!newRegistryBlobId.trim()) {
+            alert('Please enter a valid registry blob ID');
+            return;
+        }
+
+        const success = await walrusService.addSharedRegistry(newRegistryBlobId.trim());
+        if (success) {
+            alert('Registry added successfully! Refreshing agents...');
+            setNewRegistryBlobId('');
             
-            // Fetch the new agent data
-            walrusService.getAgentData(blobId).then(agentData => {
-                setAgents(prev => [...prev, { ...agentData, blobId }]);
+            // Refresh agents from the updated registry
+            const globalBlobIds = await walrusService.getAllAgentBlobIds();
+            setAgentBlobIds(globalBlobIds);
+            
+            const agentPromises = globalBlobIds.map(async (blobId) => {
+                try {
+                    const agentData = await walrusService.getAgentData(blobId);
+                    return { ...agentData, blobId };
+                } catch (error) {
+                    console.error(`Error fetching agent with blob ID ${blobId}:`, error);
+                    return null;
+                }
             });
+            
+            const agentResults = await Promise.all(agentPromises);
+            const validAgents = agentResults.filter(agent => agent !== null);
+            setAgents(validAgents);
+            
+            // Update registry info
+            const info = await walrusService.getRegistrySharingInfo();
+            setRegistryInfo(info);
+        } else {
+            alert('Failed to add registry. Please check the blob ID and try again.');
+        }
+    };
+
+    // Listen for new agents created and refresh from global registry
+    useEffect(() => {
+        const handleNewAgent = async (event) => {
+            const { blobId } = event.detail;
+            console.log('New agent created:', blobId);
+            
+            // Fetch the new agent data and add to current agents
+            try {
+                const agentData = await walrusService.getAgentData(blobId);
+                const newAgent = { ...agentData, blobId };
+                setAgents(prev => [...prev, newAgent]);
+                console.log('Added new agent to current list:', newAgent);
+            } catch (error) {
+                console.error('Error fetching new agent data:', error);
+                // If we can't fetch the specific agent, refresh all agents from global registry
+                setTimeout(async () => {
+                    const globalBlobIds = await walrusService.getAllAgentBlobIds();
+                    setAgentBlobIds(globalBlobIds);
+                    
+                    const agentPromises = globalBlobIds.map(async (id) => {
+                        try {
+                            const data = await walrusService.getAgentData(id);
+                            return { ...data, blobId: id };
+                        } catch (err) {
+                            console.error(`Error fetching agent ${id}:`, err);
+                            return null;
+                        }
+                    });
+                    
+                    const agentResults = await Promise.all(agentPromises);
+                    const validAgents = agentResults.filter(agent => agent !== null);
+                    setAgents(validAgents);
+                }, 1000);
+            }
         };
 
         window.addEventListener('newAgentCreated', handleNewAgent);
@@ -237,370 +313,358 @@ const AgentsPage = () => {
 
     return (
         <div className="agents-page">
-            <header>
-                <HeaderPrivy/>
-            </header>
-
-            {/* Grid Background - Reduced height */}
-            <div className="fixed top-0 left-0 w-screen" style={{ zIndex: -1, height: '100vh' }}>
-                <InteractiveGridPattern
-                    className={cn("w-full h-full")}
-                    width={40}
-                    height={40}
-                    squares={[60, 32]}
-                    squaresClassName=""
-                />
-            </div>
-
-
-
-            {/* Orchestrator Chat Section - Ultra Modern Design */}
-            <section className="orchestrator-chat relative" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50, minHeight: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
-                <div className="container relative px-4 sm:px-6 lg:px-8" style={{ marginTop: '120px', paddingBottom: '40px' }}>
-                    <div className="max-w-4xl mx-auto">
-                        {/* Modern Chat Container */}
-                        <div className="modern-chat-container">
-                            {/* Header */}
-                            <div className="modern-chat-header">
-                                <div className="chat-header-content">
-                                    <div className="chat-agent-info">
-                                        <div className="chat-avatar">
-                                            🤖
-                                        </div>
-                                        <div className="chat-agent-details">
-                                            <h3>Orchestrator Agent</h3>
-                                            <p>Build your multi-agent with prompts</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Messages Area */}
-                            <div className="modern-chat-messages">
-                                <div className="messages-container">
-                                    {chatMessages.map(message => (
-                                        <div key={message.id} className={`message-wrapper ${message.sender}`}>
-                                            <div className={`message-bubble ${message.sender}`}>
-                                                <p className="message-text">{message.text}</p>
-                                                <div className={`message-meta ${message.sender}`}>
-                                                    {message.sender === 'user' ? 'You' : 'Orchestrator'} • now
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Input Area */}
-                            <div className="modern-chat-input">
-                                <div className="chat-input-container">
-                                    <div className="chat-input-wrapper">
-                                        <input
-                                            type="text"
-                                            value={newMessage}
-                                            onChange={(e) => setNewMessage(e.target.value)}
-                                            placeholder="Describe what kind of AI agent you need..."
-                                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                            className="chat-input-field"
-                                        />
-                                    </div>
+            <HeaderPrivy />
+            <div className="container">
+                <h1>AI Agents Marketplace</h1>
+                
+                {/* Global Registry Sharing Section */}
+                <div className="registry-sharing-section">
+                    <div className="registry-info">
+                        <h3>🌍 Global Registry</h3>
+                        <p>Total agents in global registry: <strong>{registryInfo?.totalAgents || 0}</strong></p>
+                        <button 
+                            className="btn-secondary" 
+                            onClick={() => setShowRegistrySharing(!showRegistrySharing)}
+                        >
+                            {showRegistrySharing ? 'Hide' : 'Share'} Registry
+                        </button>
+                    </div>
+                    
+                    {showRegistrySharing && (
+                        <div className="registry-sharing-form">
+                            <div className="sharing-section">
+                                <h4>Share Your Registry</h4>
+                                <p>Share this blob ID with other users to let them see your agents:</p>
+                                <div className="registry-blob-id">
+                                    <input 
+                                        type="text" 
+                                        value={registryInfo?.currentRegistryBlobId || 'No registry created yet'} 
+                                        readOnly 
+                                        className="registry-input"
+                                    />
                                     <button 
-                                        onClick={handleSendMessage}
-                                        className="chat-send-button"
+                                        className="btn-primary"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(registryInfo?.currentRegistryBlobId || '');
+                                            alert('Registry blob ID copied to clipboard!');
+                                        }}
+                                        disabled={!registryInfo?.currentRegistryBlobId}
                                     >
-                                        Search
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div className="adding-section">
+                                <h4>Add Another User's Registry</h4>
+                                <p>Enter a registry blob ID shared by another user:</p>
+                                <div className="registry-blob-id">
+                                    <input 
+                                        type="text" 
+                                        value={newRegistryBlobId}
+                                        onChange={(e) => setNewRegistryBlobId(e.target.value)}
+                                        placeholder="Enter registry blob ID here..."
+                                        className="registry-input"
+                                    />
+                                    <button 
+                                        className="btn-primary"
+                                        onClick={handleAddSharedRegistry}
+                                        disabled={!newRegistryBlobId.trim()}
+                                    >
+                                        Add Registry
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
-            </section>
-            <br/>
-            <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
-                <div className="container bg-white rounded-t-3xl shadow-lg">
-                    <div className="px-6 py-4">
-                    <h2>Discover Agents</h2>
-                    <br/>
-                    {/* Search and Filters for Other Agents */}
-                    <div className="filters-section">
-                        <div className="filters-top">
-                            <div className="search-input-container">
-                                <input
-                                    type="text"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="Search agents..."
-                                    className="filters-search-input"
-                                />
-                                <div className="search-icon">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <select 
-                                value={filters.category} 
-                                onChange={(e) => setFilters({...filters, category: e.target.value})}
-                            >
-                                <option value="">All Categories</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Development">Development</option>
-                                <option value="Design">Design</option>
-                            </select>
-                            
-                            <select 
-                                value={filters.sortBy} 
-                                onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
-                            >
-                                <option value="recent">Most Recent</option>
-                                <option value="price-low">Lowest Price</option>
-                                <option value="price-high">Highest Price</option>
-                                <option value="name">Name A-Z</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    {/* Other Agents Grid */}
-                    <div className="agents-grid">
-                        {loading && (
-                            <div className="loading-message">
-                                <div className="loading-spinner"></div>
-                                <p>Loading agents from Walrus...</p>
-                            </div>
-                        )}
-                        
-                        {error && (
-                            <div className="error-message">
-                                <p>❌ {error}</p>
-                            </div>
-                        )}
-                        
-                        {!loading && !error && totalOtherAgents === 0 && (
-                            <div className="empty-message">
-                                <p>No agents from other users found.</p>
-                            </div>
-                        )}
-
-                        {!loading && !error && currentOtherAgents.map(agent => (
-                            <div key={agent.blobId} className="agent-card">
-                                <div className="agent-card-header">
-                                    <div className="agent-avatar">{agent.avatar}</div>
-                                    <div className="agent-main-info">
-                                        <h3 className="agent-name">
-                                            {agent.name}
-                                            <span className="verified-badge">✓</span>
-                                        </h3>
-                                        <div className="agent-category">{agent.category}</div>
+                {/* Filters Section */}
+                <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
+                    <div className="container bg-white rounded-t-3xl shadow-lg">
+                        <div className="px-6 py-4">
+                        <h2>Discover Agents</h2>
+                        <br/>
+                        {/* Search and Filters for Other Agents */}
+                        <div className="filters-section">
+                            <div className="filters-top">
+                                <div className="search-input-container">
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        placeholder="Search agents..."
+                                        className="filters-search-input"
+                                    />
+                                    <div className="search-icon">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
                                     </div>
                                 </div>
-
-                                <p className="agent-description">{agent.description}</p>
-
-                                <div className="agent-footer">
-                                    <div className="agent-price">USDC {agent.price}/hour</div>
-                                    <div className="agent-created">
-                                        {new Date(agent.createdAt).toLocaleDateString()}
-                                    </div>
-                                </div>
-
-                                <button 
-                                    className="btn-view-profile"
-                                    onClick={() => navigate(`/agents/${agent.blobId}`)}
+                                
+                                <select 
+                                    value={filters.category} 
+                                    onChange={(e) => setFilters({...filters, category: e.target.value})}
                                 >
-                                    View Agent
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                    {/* Dynamic Pagination for Other Agents */}
-                    {totalPagesOther > 1 && (
-                        <div className="pagination">
-                            <button 
-                                className="btn-page"
-                                onClick={() => handlePageChangeOther(currentPageOther - 1)}
-                                disabled={currentPageOther === 1}
-                            >
-                                ←
-                            </button>
-                            
-                            {generatePageNumbers(currentPageOther, totalPagesOther).map((page, index) => (
-                                <button
-                                    key={index}
-                                    className={`btn-page ${page === currentPageOther ? 'active' : ''}`}
-                                    onClick={() => page !== '...' && handlePageChangeOther(page)}
-                                    disabled={page === '...'}
+                                    <option value="">All Categories</option>
+                                    <option value="Data Analysis">Data Analysis</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Design">Design</option>
+                                </select>
+                                
+                                <select 
+                                    value={filters.sortBy} 
+                                    onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
                                 >
-                                    {page}
-                                </button>
-                            ))}
-                            
-                            <button 
-                                className="btn-page"
-                                onClick={() => handlePageChangeOther(currentPageOther + 1)}
-                                disabled={currentPageOther === totalPagesOther}
-                            >
-                                →
-                            </button>
-                        </div>
-                    )}
-                    
-                    {/* Show pagination info */}
-                    {totalOtherAgents > 0 && (
-                        <div className="pagination-info">
-                            <p>
-                                Showing {indexOfFirstOtherAgent + 1}-{Math.min(indexOfLastOtherAgent, totalOtherAgents)} of {totalOtherAgents} agents
-                            </p>
-                        </div>
-                    )}
-                    <br/>
-                    <hr/>
-                    <br/>
-                    <h2>Your Agents</h2>
-                    <br/>
-                    
-                    {/* Search and Filters for User Agents */}
-                    <div className="filters-section">
-                        <div className="filters-top">
-                            <div className="search-input-container">
-                                <input
-                                    type="text"
-                                    value={userSearchTerm}
-                                    onChange={(e) => setUserSearchTerm(e.target.value)}
-                                    placeholder="Search your agents..."
-                                    className="filters-search-input"
-                                />
-                                <div className="search-icon">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
+                                    <option value="recent">Most Recent</option>
+                                    <option value="price-low">Lowest Price</option>
+                                    <option value="price-high">Highest Price</option>
+                                    <option value="name">Name A-Z</option>
+                                </select>
                             </div>
-                            
-                            <select 
-                                value={userFilters.category} 
-                                onChange={(e) => setUserFilters({...userFilters, category: e.target.value})}
-                            >
-                                <option value="">All Categories</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Development">Development</option>
-                                <option value="Design">Design</option>
-                            </select>
-                            
-                            <select 
-                                value={userFilters.sortBy} 
-                                onChange={(e) => setUserFilters({...userFilters, sortBy: e.target.value})}
-                            >
-                                <option value="recent">Most Recent</option>
-                                <option value="price-low">Lowest Price</option>
-                                <option value="price-high">Highest Price</option>
-                                <option value="name">Name A-Z</option>
-                            </select>
                         </div>
-                    </div>
 
-                    {/* User Agents Grid */}
-                    <div className="agents-grid">
-                        <div className="create-agent-card" onClick={() => navigate('/create')}>
-                            <div className="plus-icon">+</div>
-                            <p>Create Agent</p>
-                        </div>
-                        
-                        {!loading && !error && totalUserAgents === 0 && (
-                            <div className="empty-message">
-                                <p>You haven't created any agents yet. Create your first agent!</p>
-                            </div>
-                        )}
-
-                        {!loading && !error && currentUserAgents.map(agent => (
-                                                            <div key={agent.blobId} className="agent-card">
-                                <div className="agent-card-header">
-                                    <div className="agent-avatar">{agent.avatar}</div>
-                                    <div className="agent-main-info">
-                                        <h3 className="agent-name">
-                                            {agent.name}
-                                            <span className="verified-badge">✓</span>
-                                            <span className="owner-badge">Mine</span>
-                                        </h3>
-                                        <div className="agent-category">{agent.category}</div>
-                                    </div>
+                        {/* Other Agents Grid */}
+                        <div className="agents-grid">
+                            {loading && (
+                                <div className="loading-message">
+                                    <div className="loading-spinner"></div>
+                                    <p>Loading agents from Walrus...</p>
                                 </div>
-
-                                <p className="agent-description">{agent.description}</p>
-
-                                <div className="agent-footer">
-                                    <div className="agent-price">USDC {agent.price}/hour</div>
-                                    <div className="agent-created">
-                                        {new Date(agent.createdAt).toLocaleDateString()}
-                                    </div>
+                            )}
+                            
+                            {error && (
+                                <div className="error-message">
+                                    <p>❌ {error}</p>
                                 </div>
+                            )}
+                            
+                            {!loading && !error && totalOtherAgents === 0 && (
+                                <div className="empty-message">
+                                    <p>No agents from other users found.</p>
+                                </div>
+                            )}
 
-                                <div className="agent-actions">
+                            {!loading && !error && currentOtherAgents.map(agent => (
+                                <div key={agent.blobId} className="agent-card">
+                                    <div className="agent-card-header">
+                                        <div className="agent-avatar">{agent.avatar}</div>
+                                        <div className="agent-main-info">
+                                            <h3 className="agent-name">
+                                                {agent.name}
+                                                <span className="verified-badge">✓</span>
+                                            </h3>
+                                            <div className="agent-category">{agent.category}</div>
+                                        </div>
+                                    </div>
+
+                                    <p className="agent-description">{agent.description}</p>
+
+                                    <div className="agent-footer">
+                                        <div className="agent-price">USDC {agent.price}/hour</div>
+                                        <div className="agent-created">
+                                            {new Date(agent.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+
                                     <button 
                                         className="btn-view-profile"
                                         onClick={() => navigate(`/agents/${agent.blobId}`)}
                                     >
                                         View Agent
                                     </button>
-                                    <button 
-                                        className="btn-edit-agent"
-                                        onClick={() => navigate(`/edit-agent/${agent.blobId}`)}
-                                    >
-                                        Edit
-                                    </button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    {/* Dynamic Pagination for User Agents */}
-                    {totalPagesUser > 1 && (
-                        <div className="pagination">
-                            <button 
-                                className="btn-page"
-                                onClick={() => handlePageChangeUser(currentPageUser - 1)}
-                                disabled={currentPageUser === 1}
-                            >
-                                ←
-                            </button>
-                            
-                            {generatePageNumbers(currentPageUser, totalPagesUser).map((page, index) => (
-                                <button
-                                    key={index}
-                                    className={`btn-page ${page === currentPageUser ? 'active' : ''}`}
-                                    onClick={() => page !== '...' && handlePageChangeUser(page)}
-                                    disabled={page === '...'}
-                                >
-                                    {page}
-                                </button>
                             ))}
+                        </div>
+                        {/* Dynamic Pagination for Other Agents */}
+                        {totalPagesOther > 1 && (
+                            <div className="pagination">
+                                <button 
+                                    className="btn-page"
+                                    onClick={() => handlePageChangeOther(currentPageOther - 1)}
+                                    disabled={currentPageOther === 1}
+                                >
+                                    ←
+                                </button>
+                                
+                                {generatePageNumbers(currentPageOther, totalPagesOther).map((page, index) => (
+                                    <button
+                                        key={index}
+                                        className={`btn-page ${page === currentPageOther ? 'active' : ''}`}
+                                        onClick={() => page !== '...' && handlePageChangeOther(page)}
+                                        disabled={page === '...'}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                                
+                                <button 
+                                    className="btn-page"
+                                    onClick={() => handlePageChangeOther(currentPageOther + 1)}
+                                    disabled={currentPageOther === totalPagesOther}
+                                >
+                                    →
+                                </button>
+                            </div>
+                        )}
+                        
+                        {/* Show pagination info */}
+                        {totalOtherAgents > 0 && (
+                            <div className="pagination-info">
+                                <p>
+                                    Showing {indexOfFirstOtherAgent + 1}-{Math.min(indexOfLastOtherAgent, totalOtherAgents)} of {totalOtherAgents} agents
+                                </p>
+                            </div>
+                        )}
+                        <br/>
+                        <hr/>
+                        <br/>
+                        <h2>Your Agents</h2>
+                        <br/>
+                        
+                        {/* Search and Filters for User Agents */}
+                        <div className="filters-section">
+                            <div className="filters-top">
+                                <div className="search-input-container">
+                                    <input
+                                        type="text"
+                                        value={userSearchTerm}
+                                        onChange={(e) => setUserSearchTerm(e.target.value)}
+                                        placeholder="Search your agents..."
+                                        className="filters-search-input"
+                                    />
+                                    <div className="search-icon">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                
+                                <select 
+                                    value={userFilters.category} 
+                                    onChange={(e) => setUserFilters({...userFilters, category: e.target.value})}
+                                >
+                                    <option value="">All Categories</option>
+                                    <option value="Data Analysis">Data Analysis</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Development">Development</option>
+                                    <option value="Design">Design</option>
+                                </select>
+                                
+                                <select 
+                                    value={userFilters.sortBy} 
+                                    onChange={(e) => setUserFilters({...userFilters, sortBy: e.target.value})}
+                                >
+                                    <option value="recent">Most Recent</option>
+                                    <option value="price-low">Lowest Price</option>
+                                    <option value="price-high">Highest Price</option>
+                                    <option value="name">Name A-Z</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* User Agents Grid */}
+                        <div className="agents-grid">
+                            <div className="create-agent-card" onClick={() => navigate('/create')}>
+                                <div className="plus-icon">+</div>
+                                <p>Create Agent</p>
+                            </div>
                             
-                            <button 
-                                className="btn-page"
-                                onClick={() => handlePageChangeUser(currentPageUser + 1)}
-                                disabled={currentPageUser === totalPagesUser}
-                            >
-                                →
-                            </button>
+                            {!loading && !error && totalUserAgents === 0 && (
+                                <div className="empty-message">
+                                    <p>You haven't created any agents yet. Create your first agent!</p>
+                                </div>
+                            )}
+
+                            {!loading && !error && currentUserAgents.map(agent => (
+                                                                <div key={agent.blobId} className="agent-card">
+                                    <div className="agent-card-header">
+                                        <div className="agent-avatar">{agent.avatar}</div>
+                                        <div className="agent-main-info">
+                                            <h3 className="agent-name">
+                                                {agent.name}
+                                                <span className="verified-badge">✓</span>
+                                                <span className="owner-badge">Mine</span>
+                                            </h3>
+                                            <div className="agent-category">{agent.category}</div>
+                                        </div>
+                                    </div>
+
+                                    <p className="agent-description">{agent.description}</p>
+
+                                    <div className="agent-footer">
+                                        <div className="agent-price">USDC {agent.price}/hour</div>
+                                        <div className="agent-created">
+                                            {new Date(agent.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+
+                                    <div className="agent-actions">
+                                        <button 
+                                            className="btn-view-profile"
+                                            onClick={() => navigate(`/agents/${agent.blobId}`)}
+                                        >
+                                            View Agent
+                                        </button>
+                                        <button 
+                                            className="btn-edit-agent"
+                                            onClick={() => navigate(`/edit-agent/${agent.blobId}`)}
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    )}
-                    
-                    {/* Show pagination info */}
-                    {totalUserAgents > 0 && (
-                        <div className="pagination-info">
-                            <p>
-                                Showing {indexOfFirstUserAgent + 1}-{Math.min(indexOfLastUserAgent, totalUserAgents)} of {totalUserAgents} agents
-                            </p>
+                        {/* Dynamic Pagination for User Agents */}
+                        {totalPagesUser > 1 && (
+                            <div className="pagination">
+                                <button 
+                                    className="btn-page"
+                                    onClick={() => handlePageChangeUser(currentPageUser - 1)}
+                                    disabled={currentPageUser === 1}
+                                >
+                                    ←
+                                </button>
+                                
+                                {generatePageNumbers(currentPageUser, totalPagesUser).map((page, index) => (
+                                    <button
+                                        key={index}
+                                        className={`btn-page ${page === currentPageUser ? 'active' : ''}`}
+                                        onClick={() => page !== '...' && handlePageChangeUser(page)}
+                                        disabled={page === '...'}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                                
+                                <button 
+                                    className="btn-page"
+                                    onClick={() => handlePageChangeUser(currentPageUser + 1)}
+                                    disabled={currentPageUser === totalPagesUser}
+                                >
+                                    →
+                                </button>
+                            </div>
+                        )}
+                                
+                        {/* Show pagination info */}
+                                {totalUserAgents > 0 && (
+                                    <div className="pagination-info">
+                                        <p>
+                                            Showing {indexOfFirstUserAgent + 1}-{Math.min(indexOfLastUserAgent, totalUserAgents)} of {totalUserAgents} agents
+                                        </p>
+                                    </div>
+                                )}
+                                <br/>
                         </div>
-                    )}
-                    <br/>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
 
             {/* Footer */}
             <Footer />

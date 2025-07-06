@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "npm-9_x"]
+
+[phases.build]
+cmds = [
+    "cd src/frontend",
+    "npm ci",
+    "npm run build"
+]
+
+[phases.start]
+cmd = "cd src/frontend && npm run preview -- --host 0.0.0.0 --port $PORT"
+
+[variables]
+NODE_ENV = "production" 

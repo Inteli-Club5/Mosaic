@@ -1,5 +1,18 @@
 # README
 
+## 🚀 Railway Deployment Quick Fix
+
+**Having trouble with "Nixpacks build failed" error?** I've added deployment configuration files to fix this:
+
+- `nixpacks.toml` - Main deployment configuration  
+- `package.json` - Root package.json for monorepo management
+- `railway-frontend.toml` & `railway-backend.toml` - Separate service configurations  
+- `RAILWAY_DEPLOYMENT.md` - Complete deployment guide
+
+**Quick Fix:** Commit these new files and redeploy on Railway! See [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md) for detailed instructions.
+
+---
+
 ## ETHGlobal Hackathon
 
 <sub>Figure 1 - Logo</sub>
