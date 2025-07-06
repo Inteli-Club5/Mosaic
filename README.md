@@ -390,7 +390,7 @@ The platform's unique approach combines three innovative technologies:
 
 **dApp**
 
-[**Website**](mosaic-production-9928.up.railway.app/)
+[**Website**](https://mosaic-production-9928.up.railway.app/)
 
 ## 6. Market and Business Model
 
