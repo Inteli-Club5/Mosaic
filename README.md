@@ -386,6 +386,14 @@ The platform's unique approach combines three innovative technologies:
 
 ## 5. Demo
 
+**Hedera Testnet**
+
+**Verifiable Contract Address**: 0x42dc444aa142f78a8de8c7304bbbcd5b6581fe32
+<br/>
+**AIAccessNFT Contract Address**: 0xcAeFEc77F848504C2559801180d8284B5dBcD86E
+<br/>
+**AIAccessMarketplace Contract Address**: 0xF74d6d202ebF8d4497d21F52Aca2A759c317305B
+
 ## 6. Market and Business Model
 
 ### 6.1 Market Size and Growth Opportunity: TAM SAM SOM Analysis
