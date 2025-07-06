@@ -10,10 +10,6 @@
 
 [**Demo video**](./)
 
-[**Pitch video**](./)
-
-[**Slides**](https://www.canva.com/design/DAGsPRGA5WU/4LQJ--QUBoculGqMcSkE3w/edit?utm_content=DAGsPRGA5WU\&utm_campaign=designshare\&utm_medium=link2\&utm_source=sharebutton)
-
 [**Gitbook Docs**](https://mosaic-7.gitbook.io/mosaic-docs)
 
 # Table of Contents
@@ -392,9 +388,9 @@ The platform's unique approach combines three innovative technologies:
 <br/>
 **AIAccessMarketplace Contract Address**: 0xF74d6d202ebF8d4497d21F52Aca2A759c317305B
 
-**Backend API**
+**dApp**
 
-API: https://mosaic-backend-api.onrender.com/
+**Website**: mosaic-production-9928.up.railway.app/
 
 ## 6. Market and Business Model
 
