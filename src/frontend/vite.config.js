@@ -9,4 +9,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/chat': 'http://localhost:3000',
+      '/verify-nft': 'http://localhost:3000',
+    }
+  }
 })

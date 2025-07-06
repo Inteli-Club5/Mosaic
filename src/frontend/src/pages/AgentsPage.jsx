@@ -10,8 +10,10 @@ import HeaderPrivy from '../components/HeaderPrivy';
 
 
 const AgentsPage = () => {
+
+    const { user } = usePrivy();
     const [chatMessages, setChatMessages] = useState([
-        { id: 1, sender: 'orchestrator', text: 'Hello! I am the orchestrator agent. I can help you find the perfect agent for your needs. What are you looking for?' }
+        { id: 1, sender: 'orchestrator', text: 'Hello! I am the orchestrator agent. Tell me what is your problem and I can recomend you a (or more) AI agent that could help you.' }
     ]);
     
     const [newMessage, setNewMessage] = useState('');
@@ -28,25 +30,48 @@ const AgentsPage = () => {
 
     const navigate = useNavigate();
 
-    const handleSendMessage = () => {
-        if (newMessage.trim()) {
-            setChatMessages([...chatMessages, { 
-                id: chatMessages.length + 1, 
-                sender: 'user', 
-                text: newMessage 
-            }]);
-            
-            setTimeout(() => {
-                setChatMessages(prev => [...prev, {
-                    id: prev.length + 1,
-                    sender: 'orchestrator',
-                    text: 'Based on your request, I found some agents that can help you. I will show the results below.'
-                }]);
-            }, 1000);
-            
-            setNewMessage('');
+    const handleSendMessage = async () => {
+        if (!newMessage.trim()) return;
+      
+        const userMessage = newMessage; // captura valor atual
+      
+        // Adiciona mensagem do usuário à UI
+        setChatMessages(prev => [
+          ...prev,
+          { id: prev.length + 1, sender: 'user', text: userMessage }
+        ]);
+      
+        setNewMessage('');
+      
+        try {
+          const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: userMessage,
+              wallet: user?.wallet?.address // se usar Privy
+            }),
+          });
+      
+          if (!response.ok) throw new Error('Erro na resposta do servidor');
+      
+          const data = await response.json();
+      
+          setChatMessages(prev => [
+            ...prev,
+            { id: prev.length + 1, sender: 'orchestrator', text: data.message || data.reply }
+          ]);
+        } catch (error) {
+          console.error('Erro:', error);
+          setChatMessages(prev => [
+            ...prev,
+            { id: prev.length + 1, sender: 'orchestrator', text: 'Erro ao comunicar com o servidor.' }
+          ]);
         }
-    };
+      };
+      
+      
+      
 
     const filteredAgents = AGENTS_DATA.filter(agent => {
         const matchesSearch = !searchTerm || 
@@ -146,6 +171,12 @@ const AgentsPage = () => {
                                     >
                                         Search
                                     </button>
+                                    {chatMessages.some(m => m.requiresNft) && (
+                                        <div className="chat-followup-options">
+                                            <button onClick={handleContinueWithAgent}>✅ Continue with Agent</button>
+                                            <button onClick={handleExploreOthers}>🔁 Explore other options</button>
+                                        </div>
+                                        )}
                                 </div>
                             </div>
                         </div>
