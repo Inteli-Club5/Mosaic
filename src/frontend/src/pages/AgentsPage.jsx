@@ -1,83 +1,32 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../constants/routes';
+import { AGENTS_DATA } from '../constants/agents';
+import { cn } from '../lib/utils';
+import { InteractiveGridPattern } from '../components/magicui/interactive-grid-pattern';
+import Footer from '../components/Footer';
+import { usePrivy } from "@privy-io/react-auth";
+import HeaderPrivy from '../components/HeaderPrivy';
+
 
 const AgentsPage = () => {
     const [chatMessages, setChatMessages] = useState([
-        { id: 1, sender: 'orchestrator', text: 'Olá! Sou o agente orquestrador. Posso ajudá-lo a encontrar o agente perfeito para suas necessidades. O que você está procurando?' }
+        { id: 1, sender: 'orchestrator', text: 'Hello! I am the orchestrator agent. I can help you find the perfect agent for your needs. What are you looking for?' }
     ]);
     
     const [newMessage, setNewMessage] = useState('');
-    const [showAgents, setShowAgents] = useState(false);
+    const [showAgents, setShowAgents] = useState(true);
     
+    const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({
         category: '',
-        minPrice: 0,
-        maxPrice: 500,
         minRating: 0,
         sortBy: 'popularity'
     });
 
-    const [agents] = useState([
-        {
-            id: 1,
-            name: 'Agente de Análise de Dados',
-            category: 'Análise de Dados',
-            description: 'Especializado em análise estatística, visualização de dados e insights de negócios para empresas.',
-            price: 50,
-            rating: 4.8,
-            avatar: '📊',
-            verified: true
-        },
-        {
-            id: 2,
-            name: 'Assistente de Marketing',
-            category: 'Marketing',
-            description: 'Criação de campanhas, análise de mercado e estratégias de marketing digital para seu negócio.',
-            price: 35,
-            rating: 4.6,
-            avatar: '📈',
-            verified: true
-        },
-        {
-            id: 3,
-            name: 'Consultor Financeiro IA',
-            category: 'Finanças',
-            description: 'Planejamento financeiro, análise de investimentos e consultoria para otimização de recursos.',
-            price: 80,
-            rating: 4.9,
-            avatar: '💰',
-            verified: true
-        },
-        {
-            id: 4,
-            name: 'Desenvolvedor de Código',
-            category: 'Desenvolvimento',
-            description: 'Desenvolvimento de aplicações, revisão de código e consultoria técnica em diversas linguagens.',
-            price: 60,
-            rating: 4.7,
-            avatar: '💻',
-            verified: true
-        },
-        {
-            id: 5,
-            name: 'Designer Criativo',
-            category: 'Design',
-            description: 'Criação de designs únicos, branding e identidade visual para projetos criativos.',
-            price: 45,
-            rating: 4.5,
-            avatar: '🎨',
-            verified: false
-        },
-        {
-            id: 6,
-            name: 'Especialista em SEO',
-            category: 'Marketing',
-            description: 'Otimização de mecanismos de busca, análise de palavras-chave e estratégias de posicionamento.',
-            price: 40,
-            rating: 4.4,
-            avatar: '🔍',
-            verified: true
-        }
-    ]);
+
+
+    const navigate = useNavigate();
 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
@@ -87,25 +36,26 @@ const AgentsPage = () => {
                 text: newMessage 
             }]);
             
-            // Simular resposta do agente orquestrador
             setTimeout(() => {
                 setChatMessages(prev => [...prev, {
                     id: prev.length + 1,
                     sender: 'orchestrator',
-                    text: 'Baseado na sua solicitação, encontrei alguns agentes que podem ajudá-lo. Vou mostrar os resultados abaixo.'
+                    text: 'Based on your request, I found some agents that can help you. I will show the results below.'
                 }]);
-                setShowAgents(true);
             }, 1000);
             
             setNewMessage('');
         }
     };
 
-    const filteredAgents = agents.filter(agent => {
+    const filteredAgents = AGENTS_DATA.filter(agent => {
+        const matchesSearch = !searchTerm || 
+            agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            agent.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            agent.category.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = !filters.category || agent.category === filters.category;
-        const matchesPrice = agent.price >= filters.minPrice && agent.price <= filters.maxPrice;
         const matchesRating = agent.rating >= filters.minRating;
-        return matchesCategory && matchesPrice && matchesRating;
+        return matchesSearch && matchesCategory && matchesRating;
     });
 
     const sortedAgents = [...filteredAgents].sort((a, b) => {
@@ -123,120 +73,137 @@ const AgentsPage = () => {
 
     return (
         <div className="agents-page">
-            {/* Header */}
             <header>
-                <div className="container">
-                    <div className="nav-wrapper">
-                        <div className="logo">
-                            <img src="./logo.png" alt="Mosaic Logo" />
-                            <span>Mosaic</span>
-                        </div>
-                        <nav>
-                            <ul>
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/agents" className="active">Agentes</a></li>
-                                <li><a href="/agents/create">Cadastrar Agente</a></li>
-                            </ul>
-                        </nav>
-                        <div className="auth-buttons">
-                            <button className="btn-login">Login</button>
-                            <button className="btn-register">Cadastrar</button>
-                        </div>
-                    </div>
-                </div>
+                <HeaderPrivy/>
             </header>
 
-            {/* Orchestrator Chat Section */}
-            <section className="orchestrator-chat">
-                <div className="container">
-                    <div className="chat-container large">
-                        <div className="chat-header">
-                            <div className="agent-info">
-                                <div className="agent-avatar orchestrator">🎭</div>
-                                <div className="agent-details">
-                                    <h3>Agente Orquestrador</h3>
-                                    <span className="status online">Online - Encontrando agentes para você</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="chat-messages">
-                            {chatMessages.map(message => (
-                                <div key={message.id} className={`message ${message.sender}`}>
-                                    <div className="message-content">
-                                        {message.text}
+            {/* Grid Background - Reduced height */}
+            <div className="fixed top-0 left-0 w-screen" style={{ zIndex: -1, height: '100vh' }}>
+                <InteractiveGridPattern
+                    className={cn("w-full h-full")}
+                    width={40}
+                    height={40}
+                    squares={[60, 32]}
+                    squaresClassName=""
+                />
+            </div>
+
+
+
+            {/* Orchestrator Chat Section - Ultra Modern Design */}
+            <section className="orchestrator-chat relative" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50, minHeight: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
+                <div className="container relative px-4 sm:px-6 lg:px-8" style={{ marginTop: '120px', paddingBottom: '40px' }}>
+                    <div className="max-w-4xl mx-auto">
+                        {/* Modern Chat Container */}
+                        <div className="modern-chat-container">
+                            {/* Header */}
+                            <div className="modern-chat-header">
+                                <div className="chat-header-content">
+                                    <div className="chat-agent-info">
+                                        <div className="chat-avatar">
+                                            🤖
+                                        </div>
+                                        <div className="chat-agent-details">
+                                            <h3>Orchestrator Agent</h3>
+                                            <p>Build your multi-agent with prompts</p>
+                                        </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="chat-input">
-                            <input
-                                type="text"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                placeholder="Descreva o que você precisa... (ex: 'Preciso de ajuda com análise de dados de vendas')"
-                                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            />
-                            <button onClick={handleSendMessage}>Buscar</button>
+                            </div>
+
+                            {/* Messages Area */}
+                            <div className="modern-chat-messages">
+                                <div className="messages-container">
+                                    {chatMessages.map(message => (
+                                        <div key={message.id} className={`message-wrapper ${message.sender}`}>
+                                            <div className={`message-bubble ${message.sender}`}>
+                                                <p className="message-text">{message.text}</p>
+                                                <div className={`message-meta ${message.sender}`}>
+                                                    {message.sender === 'user' ? 'You' : 'Orchestrator'} • now
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Input Area */}
+                            <div className="modern-chat-input">
+                                <div className="chat-input-container">
+                                    <div className="chat-input-wrapper">
+                                        <input
+                                            type="text"
+                                            value={newMessage}
+                                            onChange={(e) => setNewMessage(e.target.value)}
+                                            placeholder="Describe what kind of AI agent you need..."
+                                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                            className="chat-input-field"
+                                        />
+                                    </div>
+                                    <button 
+                                        onClick={handleSendMessage}
+                                        className="chat-send-button"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-            {/* Transition Area */}
-            <div className={`transition-area ${showAgents ? 'show' : ''}`}>
-                <div className="container">
-                    <h2>Agentes Encontrados</h2>
-                    <p>Deslize para baixo para ver mais agentes disponíveis</p>
-                </div>
-            </div>
-
-            {/* Agents Grid Section */}
+            <br/>
             <section className={`agents-grid-section ${showAgents ? 'show' : ''}`}>
-                <div className="container">
-                    {/* Filters */}
+                <div className="container bg-white rounded-t-3xl shadow-lg">
+                    <div className="px-6 py-4">
+                    {/* Search and Filters */}
                     <div className="filters-section">
                         <div className="filters-top">
+                            <div className="search-input-container">
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Search agents..."
+                                    className="filters-search-input"
+                                />
+                                <div className="search-icon">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            
                             <select 
                                 value={filters.category} 
                                 onChange={(e) => setFilters({...filters, category: e.target.value})}
                             >
-                                <option value="">Todas as Categorias</option>
-                                <option value="Análise de Dados">Análise de Dados</option>
+                                <option value="">All Categories</option>
+                                <option value="Data Analysis">Data Analysis</option>
                                 <option value="Marketing">Marketing</option>
-                                <option value="Finanças">Finanças</option>
-                                <option value="Desenvolvimento">Desenvolvimento</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Development">Development</option>
                                 <option value="Design">Design</option>
                             </select>
-                            
-                            <div className="price-filter">
-                                <label>Preço: R${filters.minPrice} - R${filters.maxPrice}/hora</label>
-                                <input 
-                                    type="range" 
-                                    min="0" 
-                                    max="500" 
-                                    value={filters.maxPrice}
-                                    onChange={(e) => setFilters({...filters, maxPrice: e.target.value})}
-                                />
-                            </div>
                             
                             <select 
                                 value={filters.minRating} 
                                 onChange={(e) => setFilters({...filters, minRating: e.target.value})}
                             >
-                                <option value="0">Qualquer Avaliação</option>
-                                <option value="3">3+ Estrelas</option>
-                                <option value="4">4+ Estrelas</option>
-                                <option value="4.5">4.5+ Estrelas</option>
+                                <option value="0">Any Rating</option>
+                                <option value="3">3+ Stars</option>
+                                <option value="4">4+ Stars</option>
+                                <option value="4.5">4.5+ Stars</option>
                             </select>
                             
                             <select 
                                 value={filters.sortBy} 
                                 onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
                             >
-                                <option value="popularity">Popularidade</option>
-                                <option value="price-low">Menor Preço</option>
-                                <option value="price-high">Maior Preço</option>
-                                <option value="rating">Melhor Avaliação</option>
+                                <option value="popularity">Popularity</option>
+                                <option value="price-low">Lowest Price</option>
+                                <option value="price-high">Highest Price</option>
+                                <option value="rating">Best Rating</option>
                             </select>
                         </div>
                     </div>
@@ -244,37 +211,57 @@ const AgentsPage = () => {
                     {/* Agents Grid */}
                     <div className="agents-grid">
                         {sortedAgents.map(agent => (
-                            <div key={agent.id} className="agent-card">
-                                <div className="agent-avatar">{agent.avatar}</div>
-                                <div className="agent-info">
-                                    <div className="agent-header">
-                                        <h3>{agent.name}</h3>
-                                        {agent.verified && <span className="verified-badge">✓</span>}
-                                    </div>
-                                    <div className="agent-category">{agent.category}</div>
-                                    <p className="agent-description">{agent.description}</p>
-                                    <div className="agent-footer">
-                                        <div className="agent-price">R${agent.price}/hora</div>
-                                        <div className="agent-rating">
-                                            {'★'.repeat(Math.floor(agent.rating))} {agent.rating}
-                                        </div>
-                                    </div>
-                                    <button className="btn-view-profile">Ver Perfil</button>
-                                </div>
+                        <div key={agent.id} className="agent-card">
+                            <div className="agent-card-header">
+                            <div className="agent-avatar">{agent.avatar}</div>
+                            <div className="agent-main-info">
+                                <h3 className="agent-name">
+                                {agent.name}
+                                {agent.verified && <span className="verified-badge">✓</span>}
+                                </h3>
+                                <div className="agent-category">{agent.category}</div>
                             </div>
+                            </div>
+
+                            <p className="agent-description">{agent.description}</p>
+
+                            <div className="agent-footer">
+                            <div className="agent-price">${agent.price}/hour</div>
+                            <div className="agent-rating">
+                                {'★'.repeat(Math.floor(agent.rating))} <span>{agent.rating}</span>
+                            </div>
+                            </div>
+
+                            <button className="btn-view-profile">View Agent</button>
+                        </div>
                         ))}
                     </div>
-
-                    {/* Pagination */}
                     <div className="pagination">
                         <button className="btn-page active">1</button>
                         <button className="btn-page">2</button>
-                        <button className="btn-page">3</button>
                         <button className="btn-page">...</button>
-                        <button className="btn-page">10</button>
+                    </div>
+                    <br/>
+                    <hr/>
+                    <br/>
+                    <div className="agents-grid">
+                        <div className="create-agent-card" onClick={() => navigate('/agents/create')}>
+                        <div className="plus-icon">+</div>
+                            <p>Create Agent</p>
+                        </div>
+                    </div>
+                    <div className="pagination">
+                        <button className="btn-page active">1</button>
+                        <button className="btn-page">2</button>
+                        <button className="btn-page">...</button>
+                    </div>
+                    <br/>
                     </div>
                 </div>
             </section>
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 };

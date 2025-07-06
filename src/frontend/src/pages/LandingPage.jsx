@@ -1,5 +1,13 @@
 import React from 'react';
-import { Header, Footer, Hero, ChatDemo, FeaturesSection } from '../components';
+import { 
+    Header, 
+    Footer, 
+    Hero, 
+    ChatDemo, 
+    HowItWorks, 
+    NoCodeSection,
+    AgentMonetization
+} from '../components';
 
 const LandingPage = () => {
     return (
@@ -7,13 +15,17 @@ const LandingPage = () => {
             <Header />
             
             <Hero 
-                title="Conecte-se com Agentes de IA Especializados"
-                subtitle="Encontre o agente perfeito para suas necessidades ou compartilhe seu próprio agente com a comunidade"
+                title="Connect with Specialized AI Agents"
+                subtitle="Find the perfect agent for your needs or share your own agent with the community"
             />
+            
+            <HowItWorks />
             
             <ChatDemo />
             
-            <FeaturesSection />
+            <NoCodeSection />
+            
+            <AgentMonetization />
             
             <Footer />
         </div>

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 const ChatDemo = () => {
   const [chatMessages, setChatMessages] = useState([
-    { id: 1, sender: 'agent', text: 'Olá! Sou um agente de IA especializado em análise de dados. Como posso ajudá-lo hoje?' },
-    { id: 2, sender: 'user', text: 'Preciso de ajuda para analisar dados de vendas da minha empresa' },
-    { id: 3, sender: 'agent', text: 'Perfeito! Posso ajudá-lo com análise de tendências, identificação de padrões e criação de relatórios. Você gostaria de começar enviando seus dados?' }
+    { id: 1, sender: 'agent', text: 'Hello! I am an AI agent specialized in data analysis. How can I help you today?' },
+    { id: 2, sender: 'user', text: 'I need help analyzing sales data from my company' },
+    { id: 3, sender: 'agent', text: 'Perfect! I can help you with trend analysis, pattern identification and report creation. Would you like to start by sending your data?' }
   ]);
 
   const [newMessage, setNewMessage] = useState('');
@@ -23,14 +23,13 @@ const ChatDemo = () => {
   return (
     <section className="chat-demo">
       <div className="container">
-        <h2>Veja como é fácil interagir com nossos agentes</h2>
+        <h2>See how easy it is to interact with our agents</h2>
         <div className="chat-container">
           <div className="chat-header">
             <div className="agent-info">
               <div className="agent-avatar">🤖</div>
               <div className="agent-details">
-                <h4>Agente de Análise de Dados</h4>
-                <span className="status online">Online</span>
+                <h4>Data Analysis Agent</h4>
               </div>
             </div>
           </div>
@@ -48,10 +47,10 @@ const ChatDemo = () => {
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Digite sua mensagem..."
+              placeholder="Type your message..."
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             />
-            <button onClick={handleSendMessage}>Enviar</button>
+            <button onClick={handleSendMessage}>Send</button>
           </div>
         </div>
       </div>

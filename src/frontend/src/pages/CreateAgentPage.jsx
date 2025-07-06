@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../constants/routes';
 
 const CreateAgentPage = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -11,18 +13,19 @@ const CreateAgentPage = () => {
         specialties: [],
         experience: ''
     });
+    const navigate = useNavigate();
 
     const categories = [
-        'Análise de Dados',
+        'Data Analysis',
         'Marketing',
-        'Finanças',
-        'Desenvolvimento',
+        'Finance',
+        'Development',
         'Design',
-        'Consultoria',
-        'Educação',
-        'Saúde',
-        'Jurídico',
-        'Outros'
+        'Consulting',
+        'Education',
+        'Healthcare',
+        'Legal',
+        'Others'
     ];
 
     const handleInputChange = (field, value) => {
@@ -45,9 +48,14 @@ const CreateAgentPage = () => {
     };
 
     const handleSubmit = () => {
-        // Aqui seria feita a submissão do formulário
-        console.log('Agente criado:', formData);
-        alert('Agente criado com sucesso!');
+        if (isStepValid()) {
+            // Here would be the API call to create the agent
+            console.log('Publishing agent:', formData);
+            
+            // Redirect to agents page after successful submission
+            alert('Agent published successfully!');
+            navigate(ROUTES.AGENTS);
+        }
     };
 
     const isStepValid = () => {
@@ -68,13 +76,13 @@ const CreateAgentPage = () => {
     const getStepTitle = () => {
         switch (currentStep) {
             case 1:
-                return 'Informações Básicas';
+                return 'Basic Information';
             case 2:
-                return 'Avatar do Agente';
+                return 'Agent Avatar';
             case 3:
-                return 'Descrição Detalhada';
+                return 'Detailed Description';
             case 4:
-                return 'Preço e Finalização';
+                return 'Price and Finalization';
             default:
                 return '';
         }
@@ -91,14 +99,14 @@ const CreateAgentPage = () => {
                         </div>
                         <nav>
                             <ul>
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/agents">Agentes</a></li>
-                                <li><a href="/agents/create" className="active">Cadastrar Agente</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.HOME); }}>Home</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.AGENTS); }}>Agents</a></li>
+                                <li><a href="#" onClick={(e) => { e.preventDefault(); navigate(ROUTES.CREATE_AGENT); }} className="active">Register Agent</a></li>
                             </ul>
                         </nav>
                         <div className="auth-buttons">
                             <button className="btn-login">Login</button>
-                            <button className="btn-register">Cadastrar</button>
+                            <button className="btn-register">Register</button>
                         </div>
                     </div>
                 </div>
@@ -116,10 +124,10 @@ const CreateAgentPage = () => {
                                 >
                                     <div className="step-number">{step}</div>
                                     <div className="step-label">
-                                        {step === 1 && 'Básico'}
+                                        {step === 1 && 'Basic'}
                                         {step === 2 && 'Avatar'}
-                                        {step === 3 && 'Descrição'}
-                                        {step === 4 && 'Preço'}
+                                        {step === 3 && 'Description'}
+                                        {step === 4 && 'Price'}
                                     </div>
                                 </div>
                             ))}
@@ -141,24 +149,24 @@ const CreateAgentPage = () => {
                             {currentStep === 1 && (
                                 <div className="step-content">
                                     <div className="form-group">
-                                        <label>Nome do Agente *</label>
+                                        <label>Agent Name *</label>
                                         <input
                                             type="text"
                                             value={formData.name}
                                             onChange={(e) => handleInputChange('name', e.target.value)}
-                                            placeholder="Ex: Assistente de Marketing Digital"
+                                            placeholder="Ex: Digital Marketing Assistant"
                                             maxLength="50"
                                         />
-                                        <small>{formData.name.length}/50 caracteres</small>
+                                        <small>{formData.name.length}/50 characters</small>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Categoria *</label>
+                                        <label>Category *</label>
                                         <select
                                             value={formData.category}
                                             onChange={(e) => handleInputChange('category', e.target.value)}
                                         >
-                                            <option value="">Selecione uma categoria</option>
+                                            <option value="">Select a category</option>
                                             {categories.map(cat => (
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
@@ -166,14 +174,14 @@ const CreateAgentPage = () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Especialidades</label>
+                                        <label>Specialties</label>
                                         <input
                                             type="text"
                                             value={formData.specialties.join(', ')}
                                             onChange={(e) => handleInputChange('specialties', e.target.value.split(', '))}
-                                            placeholder="Ex: SEO, Campanhas Pagas, Analytics"
+                                            placeholder="Ex: SEO, Paid Campaigns, Analytics"
                                         />
-                                        <small>Separe por vírgulas</small>
+                                        <small>Separate by commas</small>
                                     </div>
                                 </div>
                             )}
@@ -182,7 +190,7 @@ const CreateAgentPage = () => {
                             {currentStep === 2 && (
                                 <div className="step-content">
                                     <div className="form-group">
-                                        <label>Avatar do Agente *</label>
+                                        <label>Agent Avatar *</label>
                                         <div className="avatar-options">
                                             <div className="emoji-grid">
                                                 {['🤖', '👨‍💻', '👩‍💻', '📊', '📈', '💰', '🎨', '🔍', '💡', '🎯', '🚀', '⚡'].map(emoji => (
@@ -197,15 +205,15 @@ const CreateAgentPage = () => {
                                                 ))}
                                             </div>
                                         </div>
-                                        <small>Escolha um emoji que represente seu agente</small>
+                                        <small>Choose an emoji that represents your agent</small>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Ou faça upload de uma imagem</label>
+                                        <label>Or upload an image</label>
                                         <div className="upload-area">
                                             <input type="file" accept="image/*" />
-                                            <p>Arraste uma imagem aqui ou clique para selecionar</p>
-                                            <small>Formatos: JPG, PNG, GIF (máx. 2MB)</small>
+                                            <p>Drag an image here or click to select</p>
+                                            <small>Formats: JPG, PNG, GIF (max 2MB)</small>
                                         </div>
                                     </div>
                                 </div>
@@ -215,29 +223,29 @@ const CreateAgentPage = () => {
                             {currentStep === 3 && (
                                 <div className="step-content">
                                     <div className="form-group">
-                                        <label>Descrição do Agente *</label>
+                                        <label>Agent Description *</label>
                                         <textarea
                                             value={formData.description}
                                             onChange={(e) => handleInputChange('description', e.target.value)}
-                                            placeholder="Descreva detalhadamente o que seu agente faz, suas especialidades e como pode ajudar os usuários..."
+                                            placeholder="Describe in detail what your agent does, its specialties and how it can help users..."
                                             rows="6"
                                             maxLength="500"
                                         />
                                         <small>
-                                            {formData.description.length}/500 caracteres (mínimo 50)
+                                            {formData.description.length}/500 characters (minimum 50)
                                         </small>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Experiência e Qualificações</label>
+                                        <label>Experience and Qualifications</label>
                                         <textarea
                                             value={formData.experience}
                                             onChange={(e) => handleInputChange('experience', e.target.value)}
-                                            placeholder="Conte sobre sua experiência, certificações ou qualificações relevantes..."
+                                            placeholder="Tell about your experience, certifications or relevant qualifications..."
                                             rows="4"
                                             maxLength="300"
                                         />
-                                        <small>{formData.experience.length}/300 caracteres</small>
+                                        <small>{formData.experience.length}/300 characters</small>
                                     </div>
                                 </div>
                             )}
@@ -246,9 +254,9 @@ const CreateAgentPage = () => {
                             {currentStep === 4 && (
                                 <div className="step-content">
                                     <div className="form-group">
-                                        <label>Preço por Hora *</label>
+                                        <label>Price per Hour *</label>
                                         <div className="price-input">
-                                            <span className="currency">R$</span>
+                                            <span className="currency">$</span>
                                             <input
                                                 type="number"
                                                 value={formData.price}
@@ -257,26 +265,26 @@ const CreateAgentPage = () => {
                                                 min="1"
                                                 step="0.01"
                                             />
-                                            <span className="unit">/hora</span>
+                                            <span className="unit">/hour</span>
                                         </div>
-                                        <small>Defina um preço justo baseado na complexidade do seu agente</small>
+                                        <small>Set a fair price based on your agent's complexity</small>
                                     </div>
 
                                     <div className="price-suggestions">
-                                        <h4>Sugestões de preço por categoria:</h4>
+                                        <h4>Price suggestions by category:</h4>
                                         <ul>
-                                            <li>Análise de Dados: R$ 40-80/hora</li>
-                                            <li>Marketing: R$ 30-60/hora</li>
-                                            <li>Desenvolvimento: R$ 50-100/hora</li>
-                                            <li>Design: R$ 35-70/hora</li>
-                                            <li>Consultoria: R$ 60-120/hora</li>
+                                            <li>Data Analysis: $40-80/hour</li>
+                                            <li>Marketing: $30-60/hour</li>
+                                            <li>Development: $50-100/hour</li>
+                                            <li>Design: $35-70/hour</li>
+                                            <li>Consulting: $60-120/hour</li>
                                         </ul>
                                     </div>
 
                                     <div className="terms-section">
                                         <label className="checkbox-label">
                                             <input type="checkbox" />
-                                            <span>Aceito os termos de serviço e políticas da plataforma</span>
+                                            <span>I accept the service terms and platform policies</span>
                                         </label>
                                     </div>
                                 </div>
@@ -286,7 +294,7 @@ const CreateAgentPage = () => {
                             <div className="form-navigation">
                                 {currentStep > 1 && (
                                     <button type="button" onClick={handlePrevStep} className="btn-secondary">
-                                        Anterior
+                                        Previous
                                     </button>
                                 )}
                                 {currentStep < 4 ? (
@@ -296,7 +304,7 @@ const CreateAgentPage = () => {
                                         className="btn-primary"
                                         disabled={!isStepValid()}
                                     >
-                                        Próximo
+                                        Next
                                     </button>
                                 ) : (
                                     <button 
@@ -305,7 +313,7 @@ const CreateAgentPage = () => {
                                         className="btn-primary"
                                         disabled={!isStepValid()}
                                     >
-                                        Publicar Agente
+                                        Publish Agent
                                     </button>
                                 )}
                             </div>
@@ -313,31 +321,31 @@ const CreateAgentPage = () => {
 
                         {/* Right Side - Preview */}
                         <div className="preview-section">
-                            <h3>Preview do Agente</h3>
+                            <h3>Agent Preview</h3>
                             <div className="agent-card preview">
                                 <div className="agent-avatar">
                                     {formData.avatar || '🤖'}
                                 </div>
                                 <div className="agent-info">
                                     <div className="agent-header">
-                                        <h3>{formData.name || 'Nome do Agente'}</h3>
+                                        <h3>{formData.name || 'Agent Name'}</h3>
                                         <span className="verified-badge">✓</span>
                                     </div>
                                     <div className="agent-category">
-                                        {formData.category || 'Categoria'}
+                                        {formData.category || 'Category'}
                                     </div>
                                     <p className="agent-description">
-                                        {formData.description || 'Descrição do agente aparecerá aqui...'}
+                                        {formData.description || 'Agent description will appear here...'}
                                     </p>
                                     <div className="agent-footer">
                                         <div className="agent-price">
-                                            R${formData.price || '0'}/hora
+                                            ${formData.price || '0'}/hour
                                         </div>
                                         <div className="agent-rating">
-                                            ★★★★★ Novo
+                                            ★★★★★ New
                                         </div>
                                     </div>
-                                    <button className="btn-view-profile">Ver Perfil</button>
+                                    <button className="btn-view-profile">View Profile</button>
                                 </div>
                             </div>
                         </div>
