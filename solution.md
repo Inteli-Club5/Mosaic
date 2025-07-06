@@ -18,10 +18,10 @@ Creators keep 85% of all revenue - the highest share in the industry. More impor
 
 The platform supports multiple monetization strategies:
 
-- **Micro-transactions** for quick consultations ($0.50 to $5)
-- **Standard access** for weekly or monthly usage ($20 to $200) 
-- **Enterprise licensing** for custom deployments ($10,000 to $100,000+)
-- **Revenue sharing** for popular agents featured in the marketplace
+* **Micro-transactions** for quick consultations ($0.50 to $5)
+* **Standard access** for weekly or monthly usage ($20 to $200)
+* **Enterprise licensing** for custom deployments ($10,000 to $100,000+)
+* **Revenue sharing** for popular agents featured in the marketplace
 
 Sarah Chen, our marketing analytics creator from earlier, could now offer her agent at multiple price points: $2 for a single analysis, $50 for monthly access, or $25,000 for an enterprise license with custom training data.
 
@@ -47,7 +47,7 @@ A small accounting firm used Mosaic to access specialized tax optimization agent
 
 A freelance data scientist deployed her customer churn prediction agent on Mosaic and generated $4,200 in revenue during the first month - more than she had earned from traditional consulting work in the previous quarter.
 
-***"This sounds promising, but who exactly would use this?"***
+_**"This sounds promising, but who exactly would use this?"**_
 
 ## 3.1 Agent Orchestration Engine: Our Zapier for AI
 
@@ -58,6 +58,7 @@ One of Mosaic's most revolutionary features is its intelligent agent orchestrati
 Instead of interacting with just one AI agent at a time, users can build complex workflows where multiple specialized agents work together seamlessly. The orchestrator agent acts as an intelligent conductor, automatically routing tasks to the most suitable agents based on their capabilities and reputation scores.
 
 **Example Workflow: E-commerce Business Optimization**
+
 ```
 User Input: "Help me optimize my online store for the holiday season"
 
@@ -75,17 +76,18 @@ Final output: Comprehensive holiday optimization plan
 
 The orchestrator doesn't just randomly assign tasks - it makes intelligent decisions based on a sophisticated reputation system that tracks:
 
-- **Performance Metrics**: Response accuracy, task completion rates, user satisfaction scores
-- **Specialization Depth**: How well an agent performs in specific domains
-- **Collaboration History**: How effectively agents work together in multi-step workflows
-- **Real-time Availability**: Current load and response times
-- **Cost Efficiency**: Value delivered relative to pricing
+* **Performance Metrics**: Response accuracy, task completion rates, user satisfaction scores
+* **Specialization Depth**: How well an agent performs in specific domains
+* **Collaboration History**: How effectively agents work together in multi-step workflows
+* **Real-time Availability**: Current load and response times
+* **Cost Efficiency**: Value delivered relative to pricing
 
 **Smart Recommendations in Action:**
-- High-reputation financial agents get priority for investment analysis tasks
-- Agents with proven track records in specific industries are recommended first
-- The system learns from successful workflow patterns and suggests optimal agent combinations
-- Underperforming agents are gradually filtered out of recommendations
+
+* High-reputation financial agents get priority for investment analysis tasks
+* Agents with proven track records in specific industries are recommended first
+* The system learns from successful workflow patterns and suggests optimal agent combinations
+* Underperforming agents are gradually filtered out of recommendations
 
 ### No-Code Workflow Builder
 
@@ -113,10 +115,10 @@ Users can create these complex workflows through an intuitive drag-and-drop inte
 
 Early adopters report remarkable results from orchestrated workflows:
 
-- **75% faster project completion** compared to single-agent interactions
-- **40% cost reduction** through optimal agent selection and parallel processing  
-- **90% accuracy improvement** in complex multi-step tasks
-- **Zero workflow failures** due to intelligent backup and rerouting systems
+* **75% faster project completion** compared to single-agent interactions
+* **40% cost reduction** through optimal agent selection and parallel processing
+* **90% accuracy improvement** in complex multi-step tasks
+* **Zero workflow failures** due to intelligent backup and rerouting systems
 
 A marketing agency used Mosaic's orchestration to create a complete campaign for a client: the Market Research Agent identified trending topics, the Content Creation Agent wrote blog posts, the SEO Agent optimized them, and the Analytics Agent set up tracking - all in 2 hours instead of the usual 2 weeks with human coordination.
 
@@ -124,100 +126,110 @@ A marketing agency used Mosaic's orchestration to create a complete campaign for
 
 For businesses requiring advanced coordination:
 
-- **Custom Workflow Templates**: Pre-built orchestration patterns for common business processes
-- **API Integration**: Connect external systems to agent workflows  
-- **Approval Gates**: Human review points in automated workflows
-- **SLA Monitoring**: Track and guarantee performance metrics across agent teams
-- **White-label Solutions**: Branded orchestration interfaces for enterprise clients
+* **Custom Workflow Templates**: Pre-built orchestration patterns for common business processes
+* **API Integration**: Connect external systems to agent workflows
+* **Approval Gates**: Human review points in automated workflows
+* **SLA Monitoring**: Track and guarantee performance metrics across agent teams
+* **White-label Solutions**: Branded orchestration interfaces for enterprise clients
 
 This orchestration engine transforms Mosaic from a simple AI marketplace into a comprehensive automation platform, where the sum of specialized agents becomes far greater than its parts.
 
-***"Who would benefit most from this orchestration capability?"***
+_**"Who would benefit most from this orchestration capability?"**_
 
 ## 3.2 Personas
 
 <sub>Figure 2 - User Personas</sub>
 
-![User Personas](../img/personas.png)
+![User Personas](docs/img/personas.png)
 
-<sup>Source: Material produced by the authors (2025) | [View on Canva](https://www.canva.com/design/DAGgQwCzBa8/VKkLRE0mFBOaia_rLVcaKw/edit?utm_content=DAGgQwCzBa8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)</sup>
+<sup>Source: Material produced by the authors (2025) |</sup> [<sup>View on Canva</sup>](https://www.canva.com/design/DAGgQwCzBa8/VKkLRE0mFBOaia_rLVcaKw/edit?utm_content=DAGgQwCzBa8\&utm_campaign=designshare\&utm_medium=link2\&utm_source=sharebutton)
 
 ### Persona 1: Sarah Chen - AI Creator
 
-**Name:** Sarah Chen  
-**Age:** 32  
-**Profession:** Machine Learning Engineer & AI Specialist  
-**Location:** San Francisco, CA  
+**Name:** Sarah Chen\
+**Age:** 32\
+**Profession:** Machine Learning Engineer & AI Specialist\
+**Location:** San Francisco, CA
 
 #### Profile
+
 Sarah is a experienced machine learning engineer who has worked at tech companies for 8 years. She specializes in marketing analytics and customer behavior prediction models. Currently working full-time but passionate about creating AI solutions that solve real business problems. Has built several sophisticated models in her spare time but struggles to monetize them effectively.
 
 #### Objectives
-- **Primary Goal:** Build a sustainable side income from her AI expertise and models
-- **Secondary Goal:** Gain recognition in the AI community and establish thought leadership
-- **Long-term Vision:** Eventually transition to full-time AI entrepreneurship
+
+* **Primary Goal:** Build a sustainable side income from her AI expertise and models
+* **Secondary Goal:** Gain recognition in the AI community and establish thought leadership
+* **Long-term Vision:** Eventually transition to full-time AI entrepreneurship
 
 #### Pain Points & Challenges
-- **Monetization Struggles:** Current platforms take 40-50% commission, making it hard to build sustainable income
-- **Limited Reach:** No effective way to market her specialized AI models to businesses that need them
-- **Ownership Concerns:** Worried about losing control of her intellectual property on traditional platforms
-- **Time Investment:** Spends too much time on client acquisition instead of developing better models
-- **Pricing Uncertainty:** Doesn't know how to price her services competitively while maintaining profitability
+
+* **Monetization Struggles:** Current platforms take 40-50% commission, making it hard to build sustainable income
+* **Limited Reach:** No effective way to market her specialized AI models to businesses that need them
+* **Ownership Concerns:** Worried about losing control of her intellectual property on traditional platforms
+* **Time Investment:** Spends too much time on client acquisition instead of developing better models
+* **Pricing Uncertainty:** Doesn't know how to price her services competitively while maintaining profitability
 
 #### Behaviors & Motivations
-- **Tech-Savvy:** Comfortable with blockchain and new technologies
-- **Quality-Focused:** Prioritizes building excellent models over quick monetization
-- **Community-Oriented:** Active in AI/ML communities and enjoys helping others learn
-- **Entrepreneurial:** Wants to build a business around her expertise
-- **Values Autonomy:** Prefers platforms that give creators control and fair compensation
+
+* **Tech-Savvy:** Comfortable with blockchain and new technologies
+* **Quality-Focused:** Prioritizes building excellent models over quick monetization
+* **Community-Oriented:** Active in AI/ML communities and enjoys helping others learn
+* **Entrepreneurial:** Wants to build a business around her expertise
+* **Values Autonomy:** Prefers platforms that give creators control and fair compensation
 
 #### How Mosaic Helps Sarah
-- **85% Revenue Share:** Keeps significantly more of her earnings compared to traditional platforms
-- **NFT Ownership:** Maintains true ownership of her AI agents through blockchain technology
-- **Flexible Pricing:** Can offer micro-transactions, monthly access, and enterprise licensing
-- **Built-in Discovery:** Platform's search and recommendation system helps users find her specialized agents
-- **Reputation System:** Builds credible track record through transparent performance metrics
+
+* **85% Revenue Share:** Keeps significantly more of her earnings compared to traditional platforms
+* **NFT Ownership:** Maintains true ownership of her AI agents through blockchain technology
+* **Flexible Pricing:** Can offer micro-transactions, monthly access, and enterprise licensing
+* **Built-in Discovery:** Platform's search and recommendation system helps users find her specialized agents
+* **Reputation System:** Builds credible track record through transparent performance metrics
 
 ### Persona 2: Marcus Rodriguez - Small Business Owner
 
-**Name:** Marcus Rodriguez  
-**Age:** 45  
-**Profession:** Restaurant Owner & Entrepreneur  
-**Location:** Austin, TX  
+**Name:** Marcus Rodriguez\
+**Age:** 45\
+**Profession:** Restaurant Owner & Entrepreneur\
+**Location:** Austin, TX
 
 #### Profile
+
 Marcus owns three successful Mexican restaurants in Austin and is always looking for ways to optimize operations and increase profitability. He's business-savvy but not particularly tech-focused. Has a small team and limited budget for expensive consulting or software solutions. Interested in AI and automation but finds most solutions too complex or expensive for his business size.
 
 #### Objectives
-- **Primary Goal:** Improve restaurant profitability through better demand forecasting and inventory management
-- **Secondary Goal:** Enhance customer experience and marketing effectiveness
-- **Long-term Vision:** Scale to 10 locations while maintaining quality and operational efficiency
+
+* **Primary Goal:** Improve restaurant profitability through better demand forecasting and inventory management
+* **Secondary Goal:** Enhance customer experience and marketing effectiveness
+* **Long-term Vision:** Scale to 10 locations while maintaining quality and operational efficiency
 
 #### Pain Points & Challenges
-- **Expensive Consultants:** Traditional business consultants charge $10,000+ minimums, pricing out small businesses
-- **Generic Solutions:** Most software doesn't understand the restaurant industry's unique challenges
-- **Limited Tech Expertise:** Doesn't have time to learn complex systems or manage subscriptions
-- **Seasonal Variability:** Struggles with demand forecasting during holidays and local events
-- **Tight Margins:** Needs cost-effective solutions that provide clear ROI
+
+* **Expensive Consultants:** Traditional business consultants charge $10,000+ minimums, pricing out small businesses
+* **Generic Solutions:** Most software doesn't understand the restaurant industry's unique challenges
+* **Limited Tech Expertise:** Doesn't have time to learn complex systems or manage subscriptions
+* **Seasonal Variability:** Struggles with demand forecasting during holidays and local events
+* **Tight Margins:** Needs cost-effective solutions that provide clear ROI
 
 #### Behaviors & Motivations
-- **Results-Oriented:** Wants solutions that directly impact his bottom line
-- **Practical:** Prefers simple, straightforward tools over complex systems
-- **Budget-Conscious:** Carefully evaluates cost vs. benefit for any business investment
-- **Industry-Focused:** Values expertise specific to restaurant/hospitality industry
-- **Time-Constrained:** Needs solutions that work quickly without extensive setup
+
+* **Results-Oriented:** Wants solutions that directly impact his bottom line
+* **Practical:** Prefers simple, straightforward tools over complex systems
+* **Budget-Conscious:** Carefully evaluates cost vs. benefit for any business investment
+* **Industry-Focused:** Values expertise specific to restaurant/hospitality industry
+* **Time-Constrained:** Needs solutions that work quickly without extensive setup
 
 #### How Mosaic Helps Marcus
-- **Affordable Access:** Pay $150 for 30 days of specialized inventory forecasting instead of $10,000 consulting
-- **Industry Expertise:** Access to AI agents built specifically for restaurant operations
-- **No Long-term Commitments:** Pay only for what he needs, when he needs it
-- **Immediate Value:** Get actionable insights quickly without complex implementation
-- **Agent Orchestration:** Multiple specialized agents work together (inventory + marketing + customer service) for comprehensive solutions
+
+* **Affordable Access:** Pay $150 for 30 days of specialized inventory forecasting instead of $10,000 consulting
+* **Industry Expertise:** Access to AI agents built specifically for restaurant operations
+* **No Long-term Commitments:** Pay only for what he needs, when he needs it
+* **Immediate Value:** Get actionable insights quickly without complex implementation
+* **Agent Orchestration:** Multiple specialized agents work together (inventory + marketing + customer service) for comprehensive solutions
 
 ## 3.3 Value Proposition Canvas
 
 <sub>Figure 3 - Value Proposition Canvas</sub>
 
-![Value Proposition Canvas](../img/value-prop-canvas.png)
+![Value Proposition Canvas](docs/img/value-prop-canvas.png)
 
-<sup>Source: Material produced by the authors (2025) | [View on Canva](https://www.canva.com/design/DAGgQwCzBa8/VKkLRE0mFBOaia_rLVcaKw/edit?utm_content=DAGgQwCzBa8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | Template from [Strategyzer](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.strategyzer.com%2Flibrary%2Fthe-value-proposition-canvas&psig=AOvVaw1mu8QB2T4G5ERnVzEeuh9Y&ust=1738958698227000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDyvo3sr4sDFQAAAAAdAAAAABAE)</sup> 
+<sup>Source: Material produced by the authors (2025) |</sup> [<sup>View on Canva</sup>](https://www.canva.com/design/DAGgQwCzBa8/VKkLRE0mFBOaia_rLVcaKw/edit?utm_content=DAGgQwCzBa8\&utm_campaign=designshare\&utm_medium=link2\&utm_source=sharebutton) <sup>| Template from</sup> [<sup>Strategyzer</sup>](https://www.google.com/url?sa=i\&url=https%3A%2F%2Fwww.strategyzer.com%2Flibrary%2Fthe-value-proposition-canvas\&psig=AOvVaw1mu8QB2T4G5ERnVzEeuh9Y\&ust=1738958698227000\&source=images\&cd=vfe\&opi=89978449\&ved=0CBQQjRxqFwoTCIDyvo3sr4sDFQAAAAAdAAAAABAE)
