@@ -12,9 +12,8 @@ const CreateAgentPage = () => {
         avatar: '',
         description: '',
         price: '',
-        rating: 5,
         specialties: [],
-        experience: ''
+        keyFeatures: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
@@ -91,7 +90,7 @@ const CreateAgentPage = () => {
             case 3:
                 return formData.description.trim() && formData.description.length >= 50;
             case 4:
-                return formData.price && parseFloat(formData.price) > 0 && formData.rating >= 1 && formData.rating <= 5;
+                return formData.price && parseFloat(formData.price) > 0;
             default:
                 return false;
         }
@@ -241,15 +240,15 @@ const CreateAgentPage = () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Experience and Qualifications</label>
+                                        <label>Key Features</label>
                                         <textarea
-                                            value={formData.experience}
-                                            onChange={(e) => handleInputChange('experience', e.target.value)}
-                                            placeholder="Tell about your experience, certifications or relevant qualifications..."
+                                            value={formData.keyFeatures}
+                                            onChange={(e) => handleInputChange('keyFeatures', e.target.value)}
+                                            placeholder="List the key features and capabilities of your agent..."
                                             rows="4"
                                             maxLength="300"
                                         />
-                                        <small>{formData.experience.length}/300 characters</small>
+                                        <small>{formData.keyFeatures.length}/300 characters</small>
                                     </div>
                                 </div>
                             )}
@@ -274,36 +273,7 @@ const CreateAgentPage = () => {
                                         <small>Set a fair price based on your agent's complexity</small>
                                     </div>
 
-                                    <div className="form-group">
-                                        <label>Initial Rating *</label>
-                                        <div className="rating-input">
-                                            <div className="rating-stars">
-                                                {[1, 2, 3, 4, 5].map(star => (
-                                                    <button
-                                                        key={star}
-                                                        type="button"
-                                                        className={`star ${star <= formData.rating ? 'filled' : ''}`}
-                                                        onClick={() => handleInputChange('rating', star)}
-                                                    >
-                                                        ★
-                                                    </button>
-                                                ))}
-                                            </div>
-                                            <span className="rating-text">{formData.rating}/5 stars</span>
-                                        </div>
-                                        <small>Set the initial rating for your agent (can be updated later)</small>
-                                    </div>
 
-                                    <div className="price-suggestions">
-                                        <h4>Price suggestions by category:</h4>
-                                        <ul>
-                                            <li>Data Analysis: USDC 40-80/hour</li>
-                                            <li>Marketing: USDC 30-60/hour</li>
-                                            <li>Development: USDC 50-100/hour</li>
-                                            <li>Design: USDC 35-70/hour</li>
-                                            <li>Consulting: USDC 60-120/hour</li>
-                                        </ul>
-                                    </div>
 
                                     <div className="terms-section">
                                         <label className="checkbox-label">
@@ -346,31 +316,28 @@ const CreateAgentPage = () => {
                         {/* Right Side - Preview */}
                         <div className="preview-section">
                             <h3>Agent Preview</h3>
-                            <div className="agent-card preview">
-                                <div className="agent-avatar">
-                                    {formData.avatar || '🤖'}
+                            <div className="agent-card">
+                                <div className="agent-card-header">
+                                    <div className="agent-avatar">{formData.avatar || '🤖'}</div>
+                                    <div className="agent-main-info">
+                                        <h3 className="agent-name">
+                                            {formData.name || 'Agent Name'}
+                                            <span className="verified-badge">✓</span>
+                                        </h3>
+                                        <div className="agent-category">{formData.category || 'Category'}</div>
+                                    </div>
                                 </div>
-                                <div className="agent-info">
-                                    <div className="agent-header">
-                                        <h3>{formData.name || 'Agent Name'}</h3>
-                                        <span className="verified-badge">✓</span>
+
+                                <p className="agent-description">{formData.description || 'Agent description will appear here...'}</p>
+
+                                <div className="agent-footer">
+                                    <div className="agent-price">USDC {formData.price || '0'}/hour</div>
+                                    <div className="agent-rating">
+                                        ★★★★★ <span>5.0</span>
                                     </div>
-                                    <div className="agent-category">
-                                        {formData.category || 'Category'}
-                                    </div>
-                                    <p className="agent-description">
-                                        {formData.description || 'Agent description will appear here...'}
-                                    </p>
-                                    <div className="agent-footer">
-                                        <div className="agent-price">
-                                            USDC {formData.price || '0'}/hour
-                                        </div>
-                                        <div className="agent-rating">
-                                            {'★'.repeat(formData.rating)}{'☆'.repeat(5 - formData.rating)} {formData.rating}/5
-                                        </div>
-                                    </div>
-                                    <button className="btn-view-profile">View Agent</button>
                                 </div>
+
+                                <button className="btn-view-profile">View Agent</button>
                             </div>
                         </div>
                     </div>
