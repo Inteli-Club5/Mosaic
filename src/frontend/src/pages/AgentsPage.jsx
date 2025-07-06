@@ -39,7 +39,7 @@ const AgentsPage = () => {
     const [agentsPerPage] = useState(6); // Number of agents per page
 
     const navigate = useNavigate();
-    const { user } = usePrivy();
+    const { user: privyUser } = usePrivy();
     const { wallets } = useWallets();
 
     // Global registry sharing state
@@ -190,7 +190,7 @@ const AgentsPage = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               message: userMessage,
-              wallet: user?.wallet?.address // se usar Privy
+              wallet: privyUser?.wallet?.address // se usar Privy
             }),
           });
       
@@ -216,13 +216,13 @@ const AgentsPage = () => {
 
     // Helper function to check if agent is owned by current user
     const isAgentOwnedByUser = (agent) => {
-        if (!user || !agent) return false;
+        if (!privyUser || !agent) return false;
         
         const userWallet = wallets.length > 0 ? wallets[0].address : null;
         
         return (
-            agent.createdBy === user.id ||
-            agent.ownerEmail === user.email?.address ||
+            agent.createdBy === privyUser.id ||
+            agent.ownerEmail === privyUser.email?.address ||
             (userWallet && agent.ownerWallet === userWallet)
         );
     };
