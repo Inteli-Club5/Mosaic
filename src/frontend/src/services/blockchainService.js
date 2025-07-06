@@ -27,6 +27,14 @@ class BlockchainService {
     try {
       // Get the ethereum provider from Privy wallet
       const provider = await wallet.getEthereumProvider();
+      
+      // Request account access first
+      try {
+        await provider.request({ method: 'eth_requestAccounts' });
+      } catch (accountError) {
+        console.warn('Account request failed, continuing with existing accounts:', accountError);
+      }
+      
       this.provider = new ethers.BrowserProvider(provider);
       this.signer = await this.provider.getSigner();
       
