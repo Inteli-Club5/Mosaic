@@ -232,7 +232,12 @@ const AgentsPage = () => {
                             </div>
                             </div>
 
-                            <button className="btn-view-profile">View Agent</button>
+                            <button 
+                                className="btn-view-profile"
+                                onClick={() => navigate(`/agents/${agent.id}`)}
+                            >
+                                View Agent
+                            </button>
                         </div>
                         ))}
                     </div>
@@ -243,6 +248,8 @@ const AgentsPage = () => {
                     </div>
                     <br/>
                     <hr/>
+                    <br/>
+                    <h2> Your Agents</h2>
                     <br/>
                     <div className="agents-grid">
                         <div className="create-agent-card" onClick={() => navigate('/create')}>

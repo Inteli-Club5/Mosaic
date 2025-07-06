@@ -14,7 +14,7 @@ const HeaderPrivy = () => {
         <div className="nav-wrapper">
             <a href={ROUTES.HOME} className="logo-link">
                 <div className="logo">
-                    <img src="./logo-big.svg" alt="Mosaic" />
+                    <img src="/logo-big.svg" alt="Mosaic" />
                 </div>
             </a>
           <div className="auth-buttons">
