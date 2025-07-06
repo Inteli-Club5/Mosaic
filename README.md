@@ -8,9 +8,11 @@
 
 # Mosaic: Piecing Together Intelligence, One Agent at a Time
 
-[**Demo video**](./)
+[**Website**](https://mosaic-production-9928.up.railway.app/)
 
 [**Gitbook Docs**](https://mosaic-7.gitbook.io/mosaic-docs)
+
+[**Demo video**](./)
 
 # Table of Contents
 - [1. Introduction](#1-introduction)
