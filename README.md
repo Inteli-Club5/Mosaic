@@ -394,6 +394,10 @@ The platform's unique approach combines three innovative technologies:
 <br/>
 **AIAccessMarketplace Contract Address**: 0xF74d6d202ebF8d4497d21F52Aca2A759c317305B
 
+**Backend API**
+
+API: https://mosaic-backend-api.onrender.com/
+
 ## 6. Market and Business Model
 
 ### 6.1 Market Size and Growth Opportunity: TAM SAM SOM Analysis
